@@ -65,11 +65,30 @@ namespace WindowsFormsApp1
 
             return result;
         }
+
+        public static string findIndexRepresent(string input)
+        {
+            string result = "";
+
+
+
+            return result;
+        }
+        public static string removeOpenAndCloseBoundBrackets(string input)
+        {
+            int firstOpenRoundBracket = input.IndexOf("(");
+            int lastCloseRoundBracket = input.LastIndexOf(")");
+
+            string importantContent = input.Substring(firstOpenRoundBracket + 1, lastCloseRoundBracket - firstOpenRoundBracket - 1);
+            return importantContent;
+        }
         #endregion
         #region router 
         public static string handlePost(string post)
         {
             string result = "";
+
+            post = removeOpenAndCloseBoundBrackets(post);
 
             int firstIndexVM = post.IndexOf(VM_SYNTAX);
             int lastIndexVM = post.LastIndexOf(VM_SYNTAX);
@@ -130,11 +149,7 @@ namespace WindowsFormsApp1
         }
         public static string handleVMIteration(string input)
         {
-            int firstOpenRoundBracket = input.IndexOf("(");
-            int lastCloseRoundBracket = input.LastIndexOf(")");
-
-            string importantContent = input.Substring(firstOpenRoundBracket + 1, lastCloseRoundBracket - firstOpenRoundBracket - 1);
-            return importantContent;
+            return input;
         }
         public static string handleTTIteration(string input)
         {

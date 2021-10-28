@@ -8,3 +8,4 @@ D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj
 D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\Formular Specification.csproj.CoreCompileInputs.cache
 D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.exe
 D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.pdb
+D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.FormTest.resources
