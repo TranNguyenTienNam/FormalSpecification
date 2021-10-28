@@ -19,6 +19,10 @@ namespace WindowsFormsApp1
         public static string FRAME_WORK_VERSION = "v4.0";
 
         public string sourcePath = String.Empty;
+
+        private Stack<string> _editingHistory = new Stack<string>();
+
+        private Stack<string> _undoHistory = new Stack<string>();
         public Form1()
         {
             InitializeComponent();
@@ -95,6 +99,97 @@ namespace WindowsFormsApp1
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void toolStripBtnCopy_Click(object sender, EventArgs e)
+        {
+            if (tbSource.SelectionLength > 0) tbSource.Copy();
+        }
+
+        private void toolStripBtnCut_Click(object sender, EventArgs e)
+        {
+            if (tbSource.SelectedText != "") tbSource.Cut();
+        }
+
+        private void toolStripBtnParse_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
+            {
+                if (tbSource.SelectionLength > 0)
+                {
+                    tbSource.SelectionStart = tbSource.SelectionStart + tbSource.SelectionLength;
+                }
+                tbSource.Paste();
+            }
+        }
+
+        private void toolStripBtnUndo_Click(object sender, EventArgs e)
+        {
+            _undoHistory.Push(_editingHistory.Pop());
+            toolStripBtnRedo.Enabled = true;
+            tbSource.Text = _editingHistory.Peek();
+            toolStripBtnUndo.Enabled = _editingHistory.Count > 1;
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tbSource.SelectionLength > 0) tbSource.Copy();
+        }
+
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (tbSource.SelectedText != "") tbSource.Cut();
+        }
+
+        private void parseToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Clipboard.GetDataObject().GetDataPresent(DataFormats.Text) == true)
+            {
+                if (tbSource.SelectionLength > 0)
+                {
+                    tbSource.SelectionStart = tbSource.SelectionStart + tbSource.SelectionLength;
+                }
+                tbSource.Paste();
+            }
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _undoHistory.Push(_editingHistory.Pop());
+            toolStripBtnRedo.Enabled = true;
+            tbSource.Text = _editingHistory.Peek();
+            toolStripBtnUndo.Enabled = _editingHistory.Count > 1;
+        }
+
+        private void tbSource_TextChanged(object sender, EventArgs e)
+        {
+            if (tbSource.Modified)
+            {
+                RecordEdit();
+            }
+        }
+        private void RecordEdit()
+        {
+            _editingHistory.Push(tbSource.Text);
+            toolStripBtnUndo.Enabled = true;
+            _undoHistory.Clear();
+            toolStripBtnRedo.Enabled = false;
+        }
+
+        private void toolStripBtnRedo_Click(object sender, EventArgs e)
+        {
+            _editingHistory.Push(_undoHistory.Pop());
+            toolStripBtnRedo.Enabled = _undoHistory.Count > 0;
+            tbSource.Text = _editingHistory.Peek();
+            toolStripBtnUndo.Enabled = true;
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            _editingHistory.Push(_undoHistory.Pop());
+            toolStripBtnRedo.Enabled = _undoHistory.Count > 0;
+            tbSource.Text = _editingHistory.Peek();
+            toolStripBtnUndo.Enabled = true;
         }
     }
 }

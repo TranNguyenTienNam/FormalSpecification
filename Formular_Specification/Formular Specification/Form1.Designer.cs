@@ -93,10 +93,10 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Left)));
             this.btnGenerate.BackColor = System.Drawing.Color.Gold;
             this.btnGenerate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnGenerate.Location = new System.Drawing.Point(22, 70);
-            this.btnGenerate.Margin = new System.Windows.Forms.Padding(15, 2, 2, 2);
+            this.btnGenerate.Location = new System.Drawing.Point(29, 86);
+            this.btnGenerate.Margin = new System.Windows.Forms.Padding(20, 2, 3, 2);
             this.btnGenerate.Name = "btnGenerate";
-            this.btnGenerate.Size = new System.Drawing.Size(112, 32);
+            this.btnGenerate.Size = new System.Drawing.Size(149, 39);
             this.btnGenerate.TabIndex = 0;
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = false;
@@ -107,12 +107,12 @@ namespace WindowsFormsApp1
             this.tbGeneratedCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbGeneratedCode.Location = new System.Drawing.Point(4, 5);
-            this.tbGeneratedCode.Margin = new System.Windows.Forms.Padding(2);
+            this.tbGeneratedCode.Location = new System.Drawing.Point(5, 6);
+            this.tbGeneratedCode.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbGeneratedCode.Multiline = true;
             this.tbGeneratedCode.Name = "tbGeneratedCode";
             this.tbGeneratedCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbGeneratedCode.Size = new System.Drawing.Size(450, 319);
+            this.tbGeneratedCode.Size = new System.Drawing.Size(599, 392);
             this.tbGeneratedCode.TabIndex = 1;
             // 
             // tbStatus
@@ -121,13 +121,13 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbStatus.Cursor = System.Windows.Forms.Cursors.Default;
-            this.tbStatus.Location = new System.Drawing.Point(4, 5);
-            this.tbStatus.Margin = new System.Windows.Forms.Padding(2);
+            this.tbStatus.Location = new System.Drawing.Point(5, 6);
+            this.tbStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.ReadOnly = true;
             this.tbStatus.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbStatus.Size = new System.Drawing.Size(450, 55);
+            this.tbStatus.Size = new System.Drawing.Size(599, 67);
             this.tbStatus.TabIndex = 2;
             // 
             // tbOutput
@@ -136,10 +136,10 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbOutput.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbOutput.Location = new System.Drawing.Point(114, 8);
-            this.tbOutput.Margin = new System.Windows.Forms.Padding(2);
+            this.tbOutput.Location = new System.Drawing.Point(152, 10);
+            this.tbOutput.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbOutput.Name = "tbOutput";
-            this.tbOutput.Size = new System.Drawing.Size(174, 23);
+            this.tbOutput.Size = new System.Drawing.Size(231, 26);
             this.tbOutput.TabIndex = 3;
             this.tbOutput.Text = "test.exe";
             // 
@@ -149,10 +149,10 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbFramework.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbFramework.Location = new System.Drawing.Point(114, 39);
-            this.tbFramework.Margin = new System.Windows.Forms.Padding(2);
+            this.tbFramework.Location = new System.Drawing.Point(152, 48);
+            this.tbFramework.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbFramework.Name = "tbFramework";
-            this.tbFramework.Size = new System.Drawing.Size(174, 23);
+            this.tbFramework.Size = new System.Drawing.Size(231, 26);
             this.tbFramework.TabIndex = 4;
             this.tbFramework.Text = "v4.0";
             // 
@@ -161,10 +161,10 @@ namespace WindowsFormsApp1
             this.btnRun.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.btnRun.BackColor = System.Drawing.Color.Gold;
             this.btnRun.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRun.Location = new System.Drawing.Point(161, 70);
-            this.btnRun.Margin = new System.Windows.Forms.Padding(2, 2, 15, 2);
+            this.btnRun.Location = new System.Drawing.Point(215, 86);
+            this.btnRun.Margin = new System.Windows.Forms.Padding(3, 2, 20, 2);
             this.btnRun.Name = "btnRun";
-            this.btnRun.Size = new System.Drawing.Size(112, 32);
+            this.btnRun.Size = new System.Drawing.Size(149, 39);
             this.btnRun.TabIndex = 5;
             this.btnRun.Text = "Run";
             this.btnRun.UseVisualStyleBackColor = false;
@@ -175,10 +175,9 @@ namespace WindowsFormsApp1
             this.labelClassName.AutoSize = true;
             this.labelClassName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelClassName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.labelClassName.Location = new System.Drawing.Point(10, 11);
-            this.labelClassName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelClassName.Location = new System.Drawing.Point(13, 14);
             this.labelClassName.Name = "labelClassName";
-            this.labelClassName.Size = new System.Drawing.Size(93, 17);
+            this.labelClassName.Size = new System.Drawing.Size(111, 20);
             this.labelClassName.TabIndex = 6;
             this.labelClassName.Text = "Class Name";
             // 
@@ -187,10 +186,9 @@ namespace WindowsFormsApp1
             this.labelFileName.AutoSize = true;
             this.labelFileName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelFileName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.labelFileName.Location = new System.Drawing.Point(10, 41);
-            this.labelFileName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.labelFileName.Location = new System.Drawing.Point(13, 50);
             this.labelFileName.Name = "labelFileName";
-            this.labelFileName.Size = new System.Drawing.Size(111, 17);
+            this.labelFileName.Size = new System.Drawing.Size(131, 20);
             this.labelFileName.TabIndex = 7;
             this.labelFileName.Text = "Exe File Name";
             // 
@@ -207,11 +205,11 @@ namespace WindowsFormsApp1
             this.panel1.Controls.Add(this.tbOutput);
             this.panel1.Controls.Add(this.labelFileName);
             this.panel1.Controls.Add(this.btnGenerate);
-            this.panel1.Location = new System.Drawing.Point(4, 5);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2);
+            this.panel1.Location = new System.Drawing.Point(5, 6);
+            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(8);
-            this.panel1.Size = new System.Drawing.Size(298, 115);
+            this.panel1.Padding = new System.Windows.Forms.Padding(11, 10, 11, 10);
+            this.panel1.Size = new System.Drawing.Size(397, 141);
             this.panel1.TabIndex = 8;
             // 
             // menuStrip1
@@ -223,8 +221,8 @@ namespace WindowsFormsApp1
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Padding = new System.Windows.Forms.Padding(4, 2, 0, 2);
-            this.menuStrip1.Size = new System.Drawing.Size(796, 24);
+            this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
+            this.menuStrip1.Size = new System.Drawing.Size(1061, 28);
             this.menuStrip1.TabIndex = 9;
             this.menuStrip1.Text = "menuStrip1";
             // 
@@ -239,7 +237,7 @@ namespace WindowsFormsApp1
             this.exiteToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F)));
-            this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
             // newToolStripMenuItem
@@ -247,7 +245,7 @@ namespace WindowsFormsApp1
             this.newToolStripMenuItem.Image = global::WindowsFormsApp1.Properties.Resources.new_file;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -255,7 +253,7 @@ namespace WindowsFormsApp1
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -263,26 +261,26 @@ namespace WindowsFormsApp1
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.saveAsToolStripMenuItem.Text = "Save as";
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(143, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(178, 6);
             // 
             // exiteToolStripMenuItem
             // 
             this.exiteToolStripMenuItem.Name = "exiteToolStripMenuItem";
             this.exiteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exiteToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.exiteToolStripMenuItem.Size = new System.Drawing.Size(181, 26);
             this.exiteToolStripMenuItem.Text = "Exit";
             this.exiteToolStripMenuItem.Click += new System.EventHandler(this.exiteToolStripMenuItem_Click);
             // 
@@ -296,44 +294,54 @@ namespace WindowsFormsApp1
             this.redoToolStripMenuItem});
             this.editToolStripMenuItem.Name = "editToolStripMenuItem";
             this.editToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.E)));
-            this.editToolStripMenuItem.Size = new System.Drawing.Size(39, 20);
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(49, 24);
             this.editToolStripMenuItem.Text = "Edit";
             // 
             // copyToolStripMenuItem
             // 
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.copyToolStripMenuItem.Text = "Copy";
+            this.copyToolStripMenuItem.Click += new System.EventHandler(this.copyToolStripMenuItem_Click);
             // 
             // cutToolStripMenuItem
             // 
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
-            this.cutToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.cutToolStripMenuItem.Text = "Cut";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
             // 
             // parseToolStripMenuItem
             // 
             this.parseToolStripMenuItem.Name = "parseToolStripMenuItem";
-            this.parseToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.parseToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
+            this.parseToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.parseToolStripMenuItem.Text = "Parse";
+            this.parseToolStripMenuItem.Click += new System.EventHandler(this.parseToolStripMenuItem_Click);
             // 
             // undoToolStripMenuItem
             // 
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
-            this.undoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
             // 
             // redoToolStripMenuItem
             // 
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
-            this.redoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
             this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
             // helpToolStripMenuItem
             // 
             this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
             this.helpToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.H)));
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
             this.helpToolStripMenuItem.Text = "Help";
             // 
             // toolStrip1
@@ -355,9 +363,9 @@ namespace WindowsFormsApp1
             this.toolStripTextBox2,
             this.toolStripSeparator4,
             this.toolStripBtnHelp});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 24);
+            this.toolStrip1.Location = new System.Drawing.Point(0, 28);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(796, 27);
+            this.toolStrip1.Size = new System.Drawing.Size(1061, 27);
             this.toolStrip1.TabIndex = 10;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -367,7 +375,7 @@ namespace WindowsFormsApp1
             this.toolStripBtnNew.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnNew.Image")));
             this.toolStripBtnNew.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnNew.Name = "toolStripBtnNew";
-            this.toolStripBtnNew.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnNew.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnNew.Text = "toolStripButton1";
             // 
             // toolStripBtnOpen
@@ -376,7 +384,7 @@ namespace WindowsFormsApp1
             this.toolStripBtnOpen.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnOpen.Image")));
             this.toolStripBtnOpen.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnOpen.Name = "toolStripBtnOpen";
-            this.toolStripBtnOpen.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnOpen.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnOpen.Text = "toolStripButton2";
             // 
             // toolStripBtnSave
@@ -385,7 +393,7 @@ namespace WindowsFormsApp1
             this.toolStripBtnSave.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnSave.Image")));
             this.toolStripBtnSave.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnSave.Name = "toolStripBtnSave";
-            this.toolStripBtnSave.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnSave.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnSave.Text = "toolStripButton3";
             // 
             // toolStripSeparator1
@@ -399,8 +407,9 @@ namespace WindowsFormsApp1
             this.toolStripBtnCut.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnCut.Image")));
             this.toolStripBtnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnCut.Name = "toolStripBtnCut";
-            this.toolStripBtnCut.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnCut.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnCut.Text = "toolStripButton4";
+            this.toolStripBtnCut.Click += new System.EventHandler(this.toolStripBtnCut_Click);
             // 
             // toolStripBtnCopy
             // 
@@ -408,8 +417,9 @@ namespace WindowsFormsApp1
             this.toolStripBtnCopy.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnCopy.Image")));
             this.toolStripBtnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnCopy.Name = "toolStripBtnCopy";
-            this.toolStripBtnCopy.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnCopy.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnCopy.Text = "toolStripButton5";
+            this.toolStripBtnCopy.Click += new System.EventHandler(this.toolStripBtnCopy_Click);
             // 
             // toolStripBtnParse
             // 
@@ -417,8 +427,9 @@ namespace WindowsFormsApp1
             this.toolStripBtnParse.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnParse.Image")));
             this.toolStripBtnParse.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnParse.Name = "toolStripBtnParse";
-            this.toolStripBtnParse.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnParse.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnParse.Text = "toolStripButton6";
+            this.toolStripBtnParse.Click += new System.EventHandler(this.toolStripBtnParse_Click);
             // 
             // toolStripSeparator2
             // 
@@ -431,8 +442,9 @@ namespace WindowsFormsApp1
             this.toolStripBtnUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnUndo.Image")));
             this.toolStripBtnUndo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnUndo.Name = "toolStripBtnUndo";
-            this.toolStripBtnUndo.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnUndo.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnUndo.Text = "toolStripButton1";
+            this.toolStripBtnUndo.Click += new System.EventHandler(this.toolStripBtnUndo_Click);
             // 
             // toolStripBtnRedo
             // 
@@ -440,8 +452,9 @@ namespace WindowsFormsApp1
             this.toolStripBtnRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnRedo.Image")));
             this.toolStripBtnRedo.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnRedo.Name = "toolStripBtnRedo";
-            this.toolStripBtnRedo.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnRedo.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnRedo.Text = "toolStripButton1";
+            this.toolStripBtnRedo.Click += new System.EventHandler(this.toolStripBtnRedo_Click);
             // 
             // toolStripSeparator3
             // 
@@ -452,14 +465,14 @@ namespace WindowsFormsApp1
             // 
             this.toolStripTextBox1.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox1.Name = "toolStripTextBox1";
-            this.toolStripTextBox1.Size = new System.Drawing.Size(24, 27);
+            this.toolStripTextBox1.Size = new System.Drawing.Size(31, 27);
             this.toolStripTextBox1.Text = "C#";
             // 
             // toolStripTextBox2
             // 
             this.toolStripTextBox2.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.toolStripTextBox2.Name = "toolStripTextBox2";
-            this.toolStripTextBox2.Size = new System.Drawing.Size(24, 27);
+            this.toolStripTextBox2.Size = new System.Drawing.Size(31, 27);
             this.toolStripTextBox2.Text = "VB";
             // 
             // toolStripSeparator4
@@ -473,7 +486,7 @@ namespace WindowsFormsApp1
             this.toolStripBtnHelp.Image = ((System.Drawing.Image)(resources.GetObject("toolStripBtnHelp.Image")));
             this.toolStripBtnHelp.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripBtnHelp.Name = "toolStripBtnHelp";
-            this.toolStripBtnHelp.Size = new System.Drawing.Size(24, 24);
+            this.toolStripBtnHelp.Size = new System.Drawing.Size(29, 24);
             this.toolStripBtnHelp.Text = "toolStripButton1";
             // 
             // panel2
@@ -482,11 +495,11 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.Gold;
             this.panel2.Controls.Add(this.panel1);
-            this.panel2.Location = new System.Drawing.Point(13, 84);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2);
+            this.panel2.Location = new System.Drawing.Point(17, 103);
+            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel2.Name = "panel2";
-            this.panel2.Padding = new System.Windows.Forms.Padding(2, 2, 8, 2);
-            this.panel2.Size = new System.Drawing.Size(307, 124);
+            this.panel2.Padding = new System.Windows.Forms.Padding(3, 2, 11, 2);
+            this.panel2.Size = new System.Drawing.Size(409, 153);
             this.panel2.TabIndex = 11;
             // 
             // labelGenerateStatus
@@ -495,10 +508,10 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Left)));
             this.labelGenerateStatus.AutoSize = true;
             this.labelGenerateStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelGenerateStatus.Location = new System.Drawing.Point(14, 58);
-            this.labelGenerateStatus.Margin = new System.Windows.Forms.Padding(2, 8, 2, 0);
+            this.labelGenerateStatus.Location = new System.Drawing.Point(19, 71);
+            this.labelGenerateStatus.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
             this.labelGenerateStatus.Name = "labelGenerateStatus";
-            this.labelGenerateStatus.Size = new System.Drawing.Size(199, 24);
+            this.labelGenerateStatus.Size = new System.Drawing.Size(250, 29);
             this.labelGenerateStatus.TabIndex = 8;
             this.labelGenerateStatus.Text = "Specification source";
             // 
@@ -508,10 +521,10 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.labelBuildStatus.AutoSize = true;
             this.labelBuildStatus.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelBuildStatus.Location = new System.Drawing.Point(320, 412);
-            this.labelBuildStatus.Margin = new System.Windows.Forms.Padding(2, 8, 2, 0);
+            this.labelBuildStatus.Location = new System.Drawing.Point(427, 507);
+            this.labelBuildStatus.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
             this.labelBuildStatus.Name = "labelBuildStatus";
-            this.labelBuildStatus.Size = new System.Drawing.Size(119, 24);
+            this.labelBuildStatus.Size = new System.Drawing.Size(152, 29);
             this.labelBuildStatus.TabIndex = 12;
             this.labelBuildStatus.Text = "Build Status";
             // 
@@ -522,11 +535,11 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.BackColor = System.Drawing.Color.Gold;
             this.panel3.Controls.Add(this.tbGeneratedCode);
-            this.panel3.Location = new System.Drawing.Point(324, 84);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 8, 8, 2);
+            this.panel3.Location = new System.Drawing.Point(432, 103);
+            this.panel3.Margin = new System.Windows.Forms.Padding(3, 10, 11, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Padding = new System.Windows.Forms.Padding(2);
-            this.panel3.Size = new System.Drawing.Size(458, 328);
+            this.panel3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel3.Size = new System.Drawing.Size(611, 404);
             this.panel3.TabIndex = 12;
             // 
             // panel4
@@ -536,11 +549,11 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.BackColor = System.Drawing.Color.Gold;
             this.panel4.Controls.Add(this.tbStatus);
-            this.panel4.Location = new System.Drawing.Point(324, 438);
-            this.panel4.Margin = new System.Windows.Forms.Padding(2);
+            this.panel4.Location = new System.Drawing.Point(432, 539);
+            this.panel4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.panel4.Name = "panel4";
-            this.panel4.Padding = new System.Windows.Forms.Padding(2);
-            this.panel4.Size = new System.Drawing.Size(458, 64);
+            this.panel4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel4.Size = new System.Drawing.Size(611, 79);
             this.panel4.TabIndex = 13;
             // 
             // panel5
@@ -550,11 +563,11 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel5.BackColor = System.Drawing.Color.Gold;
             this.panel5.Controls.Add(this.tbSource);
-            this.panel5.Location = new System.Drawing.Point(13, 214);
-            this.panel5.Margin = new System.Windows.Forms.Padding(2, 8, 8, 2);
+            this.panel5.Location = new System.Drawing.Point(17, 263);
+            this.panel5.Margin = new System.Windows.Forms.Padding(3, 10, 11, 2);
             this.panel5.Name = "panel5";
-            this.panel5.Padding = new System.Windows.Forms.Padding(2);
-            this.panel5.Size = new System.Drawing.Size(307, 288);
+            this.panel5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel5.Size = new System.Drawing.Size(409, 354);
             this.panel5.TabIndex = 13;
             // 
             // tbSource
@@ -562,13 +575,14 @@ namespace WindowsFormsApp1
             this.tbSource.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSource.Location = new System.Drawing.Point(4, 5);
-            this.tbSource.Margin = new System.Windows.Forms.Padding(2);
+            this.tbSource.Location = new System.Drawing.Point(5, 6);
+            this.tbSource.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tbSource.Multiline = true;
             this.tbSource.Name = "tbSource";
             this.tbSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbSource.Size = new System.Drawing.Size(299, 279);
+            this.tbSource.Size = new System.Drawing.Size(397, 342);
             this.tbSource.TabIndex = 1;
+            this.tbSource.TextChanged += new System.EventHandler(this.tbSource_TextChanged);
             // 
             // label1
             // 
@@ -576,19 +590,19 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Left)));
             this.label1.AutoSize = true;
             this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(320, 58);
-            this.label1.Margin = new System.Windows.Forms.Padding(2, 8, 2, 0);
+            this.label1.Location = new System.Drawing.Point(427, 71);
+            this.label1.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(161, 24);
+            this.label1.Size = new System.Drawing.Size(201, 29);
             this.label1.TabIndex = 14;
             this.label1.Text = "Generated code";
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SlateGray;
-            this.ClientSize = new System.Drawing.Size(796, 510);
+            this.ClientSize = new System.Drawing.Size(1061, 628);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.panel5);
             this.Controls.Add(this.panel4);
@@ -599,7 +613,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(2);
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "Form1";
             this.Text = "Formular Specification";
             this.panel1.ResumeLayout(false);
