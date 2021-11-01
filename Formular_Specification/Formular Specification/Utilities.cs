@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -10,6 +11,7 @@ namespace WindowsFormsApp1
 {
     static class Utilities
     {
+        static string DIFFERENCE_OF_ARRAY_INDEX = "-1";
         static string VM_SYNTAX = "VM";
         static string TT_SYNTAX = "TT";
         #region hight-level generate function 
@@ -65,12 +67,12 @@ namespace WindowsFormsApp1
 
             return result;
         }
-
         public static string findIndexRepresent(string input)
         {
             string result = "";
+            string[] splitedArray = input.Split(' ');
 
-
+            result = splitedArray[1];
 
             return result;
         }
@@ -81,6 +83,47 @@ namespace WindowsFormsApp1
 
             string importantContent = input.Substring(firstOpenRoundBracket + 1, lastCloseRoundBracket - firstOpenRoundBracket - 1);
             return importantContent;
+        }
+        public static string exportExecuteLogicInIteration(string input)
+        {
+            return input.Replace('(', '[').Replace(')', ']');
+        }
+        public static string findStringOfStartAndEndIndex(string input)
+        {
+            int startBracketIndex = input.IndexOf('{');
+            int endBracketIndex = input.IndexOf('}');
+            return input.Substring(startBracketIndex + 1, endBracketIndex - startBracketIndex - 1);
+        }
+        public static List<string> splitInputToHeaderAndExecuteOfIteration(string input)
+        {
+            List<string> result = new List<string>();
+
+            int breakPoint = findBreakPointOfHeaderAndExecuteOfIteration(input);
+
+            result.Add(input.Substring(0, breakPoint).Trim());
+            result.Add(input.Substring(breakPoint + 1, input.Length - breakPoint - 1).Trim());
+
+            return result;
+        }
+        public static int findBreakPointOfHeaderAndExecuteOfIteration(string input)
+        {
+            int firstIndexCloseBracket = input.IndexOf("}");
+            return input.Substring(firstIndexCloseBracket, input.Length - firstIndexCloseBracket).IndexOf(".") + firstIndexCloseBracket;
+        }
+        public static string handleExcuteOfIteration(string input)
+        {
+            string result = "";
+
+            if (input.IndexOf("for") == -1) // one iteration
+            {
+                result = "\nif(!" + exportExecuteLogicInIteration(input) + ")" 
+                    + "\n{" + "\n\tbreak;" + "\n}";
+                result = Regex.Replace(result, @"\r\n?|\n", "\n\t");
+            } else // two iteration
+            {
+                result = Regex.Replace(input, @"\r\n?|\n", "\n\t");
+            }
+            return result;
         }
         #endregion
         #region router 
@@ -96,10 +139,9 @@ namespace WindowsFormsApp1
             int firstIndexTT = post.IndexOf(TT_SYNTAX);
             int lastIndexTT = post.LastIndexOf(TT_SYNTAX);
 
-            string indexRepresent;
-            string arrayRepresent;
-            string startIndexofIteration;
-            string endIndexOfIteration;
+            List<string> splitedOfHeaderAndExecuteLogicIteration = splitInputToHeaderAndExecuteOfIteration(post);
+            string headerOfIteration = splitedOfHeaderAndExecuteLogicIteration[0];
+            string excuteOfIteration = splitedOfHeaderAndExecuteLogicIteration[1];
 
             if (firstIndexVM == -1 && firstIndexTT == -1) // no VM and no TT
             {
@@ -110,14 +152,18 @@ namespace WindowsFormsApp1
                 {
                     if (firstIndexTT != -1 && firstIndexVM < firstIndexTT) // one VM and one TT
                     {
-                        result = handleVMIteration(handleTTIteration(post));
+                        //result = handleVMIteration(handleTTIteration(post));
                     } else // only one VM
                     {
-                        result = handleVMIteration(post);
+                        result = handleVMIteration(headerOfIteration, excuteOfIteration);
                     }
                 } else // two VMs
                 {
-                    result = handleVMIteration(handleVMIteration(post));
+                    List<string> sub_splitedOfHeaderAndExecuteLogicIteration = splitInputToHeaderAndExecuteOfIteration(excuteOfIteration);
+                    string sub_headerOfIteration = splitedOfHeaderAndExecuteLogicIteration[0];
+                    string sub_excuteOfIteration = splitedOfHeaderAndExecuteLogicIteration[1];
+
+                    result = handleVMIteration(headerOfIteration, handleVMIteration(sub_headerOfIteration, sub_excuteOfIteration));
                 }
             } else if (firstIndexTT != -1) // TT
             {
@@ -125,7 +171,7 @@ namespace WindowsFormsApp1
                 {
                     if (firstIndexVM != -1 && firstIndexTT < firstIndexVM) // one TT and one VM
                     {
-                        result = handleTTIteration(handleVMIteration(post));
+                        //result = handleTTIteration(handleVMIteration(post));
                     } else // only one TT
                     {
                         result = handleTTIteration(post);
@@ -147,13 +193,25 @@ namespace WindowsFormsApp1
         {
             return "abc";
         }
-        public static string handleVMIteration(string input)
+        public static string handleVMIteration(string headerOfIteration, string excuteOfIteration)
         {
-            return input;
+            string[] splitedArray = findStringOfStartAndEndIndex(headerOfIteration).Split(new char[] { '.', '.' });
+            string indexRepresent = findIndexRepresent(headerOfIteration);
+            string arrayRepresent = "a"; // function provided by Tien Nam
+            string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
+            string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
+
+            string beginLineCode = $"int {indexRepresent};";
+            string endLineCode = $"\nif({indexRepresent}=={endIndexOfIteration})" + "\n{" + "\n\treturn true;" + "\n} "
+                + "else" + "\n{" + "\n\treturn false;" + "\n} ";
+            return beginLineCode
+                + $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+                + "\n{" + handleExcuteOfIteration(excuteOfIteration) +  "\n}"
+                + endLineCode;
         }
         public static string handleTTIteration(string input)
         {
-            return "for (int i = 0; i<= n-1; i++)";
+            return findIndexRepresent(input);
         }
         #endregion
     }
