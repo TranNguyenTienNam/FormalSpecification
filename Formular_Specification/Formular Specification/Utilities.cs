@@ -21,7 +21,23 @@ namespace WindowsFormsApp1
 
             List<string> threePartSplited = splitInputToThreePart(specificationSource);
 
+            string titlePart = handlePost(threePartSplited[0]);
+            string prePart = handlePost(threePartSplited[1]);
             string postPart = handlePost(threePartSplited[2]);
+
+            string tilte = null;
+            List<KeyValuePair<string, string>> inputs = new List<KeyValuePair<string, string>>();
+            KeyValuePair<string, string> output = new KeyValuePair<string, string>();
+
+            HandlingTitleLine(titlePart, ref tilte, ref inputs, ref output);
+
+            string condition = null;
+            HandlingPreLine(prePart, ref condition);
+
+            GeneratingInputFunction(ref result, tilte, inputs);
+            GeneratingPreFunction(ref result, tilte, inputs, condition);
+            //GeneratingPostFunction(ref result);
+            GeneratingMainFunction(ref result, tilte, inputs, output);
 
             return result;
         }
@@ -128,6 +144,119 @@ namespace WindowsFormsApp1
         //    result = Regex.Replace(result, @"\r\n?|\n", "\n\t");
         //    return result;
         //}
+        #region Handle title and pre part
+        public static void HandlingTitleLine(string line, ref string title, ref List<KeyValuePair<string, string>> inputs, ref KeyValuePair<string, string> output)
+        {
+            title = line.Replace(" ", "").Split('(', ')')[0];
+
+            string input = line.Replace(" ", "").Split('(', ')')[1];
+            foreach (var _input in input.Split(','))
+            {
+                string var = _input.Split(':')[0];
+                string type = GetTypes(_input.Split(':')[1]);
+                inputs.Add(new KeyValuePair<string, string>(var, type));
+            }
+
+            string _output = line.Replace(" ", "").Split('(', ')')[2];
+            string outputVar = _output.Split(':')[0];
+            string outputType = GetTypes(_output.Split(':')[1]);
+            output = new KeyValuePair<string, string>(outputVar, outputType);
+        }
+
+        public static void HandlingPreLine(string line, ref string condition)
+        {
+            if (line.Length == 0)
+                condition = "true";
+            else
+            {
+                condition += line.Replace(" ", "").Remove(0, 4);
+                condition = condition.Remove(condition.Length - 1);
+            }
+        }
+
+        public static void GeneratingInputFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs)
+        {
+            string paras = null;
+            string code = null;
+            foreach (var input in inputs)
+            {
+                paras += string.Format("ref {0} {1}", input.Value, input.Key);
+                if (input.Key != inputs.Last().Key) paras += ", ";
+
+                code += string.Format("\tConsole.WriteLine(\"Nhap {0}:\");\n", input.Key);
+                code += string.Format("\t{0} = {1}.Parse(Console.ReadLine());\n", input.Key, input.Value);
+            }
+
+            generateCode += string.Format("public void Nhap_{0}({1})\n{{\n{2}}}\n\n", title, paras, code);
+        }
+
+        public static void GeneratingPreFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, string condition)
+        {
+            string paras = null;
+            foreach (var input in inputs)
+            {
+                paras += string.Format("{0} {1}", input.Value, input.Key);
+                if (input.Key != inputs.Last().Key) paras += ", ";
+            }
+            generateCode += string.Format("public bool KiemTra_{0}({1})\n{{\n\treturn {2};\n}}\n\n", title, paras, condition);
+        }
+
+        public static void GeneratingMainFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, KeyValuePair<string, string> output)
+        {
+            string code = null;
+            string paras = null;
+            foreach (var input in inputs)
+            {
+                code += string.Format("\t{0} {1} = {2};\n", input.Value, input.Key, GetInitializeValue(input.Value));
+
+                paras += string.Format("ref {0}", input.Key);
+                if (input.Key != inputs.Last().Key) paras += ", ";
+            }
+            code += string.Format("\t{0} {1} = {2};\n", output.Value, output.Key, GetInitializeValue(output.Value));
+            code += string.Format("\tProgram p = new Program();\n");
+            code += string.Format("\tp.Nhap_{0}({1});\n", title, paras);
+            code += string.Format("\tif (p.KiemTra_{0}({1}))\n\t{{\n\t\t{2} = p.XuLy_{0}({1});\n\t\tp.Xuat_{0}({2});\n\t}}\n", title, paras, output.Key);
+            code += string.Format("\telse\n\t\tConsole.WriteLine(\"Thong tin nhap khong hop le!\");\n");
+            code += string.Format("\tConsole.ReadLine();\n");
+
+            generateCode += string.Format("public static void Main(string[] args)\n{{\n{0}}}", code);
+        }
+
+        public static string GetTypes(string typeFL)
+        {
+            switch (typeFL)
+            {
+                case "N":
+                    return "int";
+                case "Z":
+                    return "int";
+                case "R":
+                    return "float";
+                case "B":
+                    return "bool";
+                case "char*":
+                    return "string";
+                default:
+                    Console.WriteLine("This type {0} is invalid!", typeFL);
+                    return null;
+            }
+        }
+
+        public static string GetInitializeValue(string type)
+        {
+            switch (type)
+            {
+                case "int":
+                    return "0";
+                case "float":
+                    return "0";
+                case "bool":
+                    return "false";
+                default:
+                    return "null";
+            }
+        }
+        #endregion
         #endregion
         #region router 
         public static string handlePost(string post)
