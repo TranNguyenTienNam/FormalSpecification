@@ -44,9 +44,9 @@ namespace WindowsFormsApp1
             // 
             // richTextBox2
             // 
-            this.richTextBox2.Location = new System.Drawing.Point(160, 207);
+            this.richTextBox2.Location = new System.Drawing.Point(160, 160);
             this.richTextBox2.Name = "richTextBox2";
-            this.richTextBox2.Size = new System.Drawing.Size(338, 96);
+            this.richTextBox2.Size = new System.Drawing.Size(338, 218);
             this.richTextBox2.TabIndex = 1;
             this.richTextBox2.Text = "";
             // 
