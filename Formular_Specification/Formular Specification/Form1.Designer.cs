@@ -31,7 +31,6 @@ namespace WindowsFormsApp1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.tbGeneratedCode = new System.Windows.Forms.TextBox();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.tbOutputName = new System.Windows.Forms.TextBox();
             this.btnRun = new System.Windows.Forms.Button();
@@ -70,10 +69,11 @@ namespace WindowsFormsApp1
             this.panel3 = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.tbSource = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.radioCS = new System.Windows.Forms.RadioButton();
             this.radioVB = new System.Windows.Forms.RadioButton();
+            this.tbGeneratedCode = new System.Windows.Forms.RichTextBox();
+            this.tbSource = new System.Windows.Forms.RichTextBox();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -97,21 +97,6 @@ namespace WindowsFormsApp1
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = false;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
-            // 
-            // tbGeneratedCode
-            // 
-            this.tbGeneratedCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbGeneratedCode.Enabled = false;
-            this.tbGeneratedCode.Location = new System.Drawing.Point(4, 5);
-            this.tbGeneratedCode.Margin = new System.Windows.Forms.Padding(2);
-            this.tbGeneratedCode.Multiline = true;
-            this.tbGeneratedCode.Name = "tbGeneratedCode";
-            this.tbGeneratedCode.ReadOnly = true;
-            this.tbGeneratedCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbGeneratedCode.Size = new System.Drawing.Size(450, 319);
-            this.tbGeneratedCode.TabIndex = 1;
             // 
             // tbStatus
             // 
@@ -219,7 +204,7 @@ namespace WindowsFormsApp1
             this.newToolStripMenuItem.Image = global::WindowsFormsApp1.Properties.Resources.new_file;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -227,7 +212,7 @@ namespace WindowsFormsApp1
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -235,27 +220,27 @@ namespace WindowsFormsApp1
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // saveAsToolStripMenuItem
             // 
             this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveAsToolStripMenuItem.Text = "Save as";
             this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(143, 6);
             // 
             // exiteToolStripMenuItem
             // 
             this.exiteToolStripMenuItem.Name = "exiteToolStripMenuItem";
             this.exiteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exiteToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.exiteToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exiteToolStripMenuItem.Text = "Exit";
             this.exiteToolStripMenuItem.Click += new System.EventHandler(this.exiteToolStripMenuItem_Click);
             // 
@@ -498,19 +483,6 @@ namespace WindowsFormsApp1
             this.panel5.Size = new System.Drawing.Size(307, 288);
             this.panel5.TabIndex = 13;
             // 
-            // tbSource
-            // 
-            this.tbSource.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSource.Location = new System.Drawing.Point(4, 5);
-            this.tbSource.Margin = new System.Windows.Forms.Padding(2);
-            this.tbSource.Multiline = true;
-            this.tbSource.Name = "tbSource";
-            this.tbSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbSource.Size = new System.Drawing.Size(299, 279);
-            this.tbSource.TabIndex = 1;
-            // 
             // label1
             // 
             this.label1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -546,6 +518,22 @@ namespace WindowsFormsApp1
             this.radioVB.Text = "VB";
             this.radioVB.UseVisualStyleBackColor = true;
             // 
+            // tbGeneratedCode
+            // 
+            this.tbGeneratedCode.Location = new System.Drawing.Point(5, 5);
+            this.tbGeneratedCode.Name = "tbGeneratedCode";
+            this.tbGeneratedCode.Size = new System.Drawing.Size(448, 318);
+            this.tbGeneratedCode.TabIndex = 0;
+            this.tbGeneratedCode.Text = "";
+            // 
+            // tbSource
+            // 
+            this.tbSource.Location = new System.Drawing.Point(4, 5);
+            this.tbSource.Name = "tbSource";
+            this.tbSource.Size = new System.Drawing.Size(298, 278);
+            this.tbSource.TabIndex = 0;
+            this.tbSource.Text = "";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -575,11 +563,9 @@ namespace WindowsFormsApp1
             this.toolStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -588,7 +574,6 @@ namespace WindowsFormsApp1
         #endregion
 
         private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.TextBox tbGeneratedCode;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.TextBox tbOutputName;
         private System.Windows.Forms.Button btnRun;
@@ -627,10 +612,11 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.TextBox tbSource;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton radioCS;
         private System.Windows.Forms.RadioButton radioVB;
+        private System.Windows.Forms.RichTextBox tbGeneratedCode;
+        private System.Windows.Forms.RichTextBox tbSource;
     }
 }
 

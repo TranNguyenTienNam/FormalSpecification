@@ -17,13 +17,22 @@ namespace WindowsFormsApp1
         #region hight-level generate function 
         public static string generateCSCode(string specificationSource)
         {
-            //logic
-            return specificationSource;
+            string result = "";
+
+            List<string> threePartSplited = splitInputToThreePart(specificationSource);
+
+            string postPart = handlePost(threePartSplited[2]);
+
+            return result;
         }
         public static string generateVBCode(string specificationSource)
         {
-            //logic
-            return specificationSource;
+            string result = "";
+            List<string> threePartSplited = splitInputToThreePart(specificationSource);
+
+            result = handlePost(threePartSplited[2]);
+
+            return result;
         }
         #endregion
         #region file helper
@@ -217,7 +226,7 @@ namespace WindowsFormsApp1
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -247,7 +256,7 @@ namespace WindowsFormsApp1
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -279,7 +288,7 @@ namespace WindowsFormsApp1
             string executeCodeString ="\n" + handledVMIteration[0] + handledVMIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -310,7 +319,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\nbreakPoint:";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -341,7 +350,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\nbreakPoint:";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -372,7 +381,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor (int {indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
