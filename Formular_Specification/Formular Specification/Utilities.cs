@@ -156,6 +156,7 @@ namespace WindowsFormsApp1
 
             return result;
         }
+        #endregion
         #region Handle title and pre part
         public static void HandlingTitleLine(string line, ref string title, ref List<KeyValuePair<string, string>> inputs, ref KeyValuePair<string, string> output)
         {
