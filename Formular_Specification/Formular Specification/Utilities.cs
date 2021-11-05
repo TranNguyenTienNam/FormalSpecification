@@ -21,24 +21,26 @@ namespace WindowsFormsApp1
 
             List<string> threePartSplited = splitInputToThreePart(specificationSource);
 
-            string titlePart = handlePost(threePartSplited[0]);
-            string prePart = handlePost(threePartSplited[1]);
+            string titlePart = threePartSplited[0].Replace("\n", "").Replace("\t", "").Trim();
+            string prePart = threePartSplited[1];
             string postPart = handlePost(threePartSplited[2]);
 
-            string tilte = null;
+            string title = null;
             List<KeyValuePair<string, string>> inputs = new List<KeyValuePair<string, string>>();
             KeyValuePair<string, string> output = new KeyValuePair<string, string>();
 
-            HandlingTitleLine(titlePart, ref tilte, ref inputs, ref output);
+            HandlingTitleLine(titlePart, ref title, ref inputs, ref output);
 
             string condition = null;
             HandlingPreLine(prePart, ref condition);
 
-            GeneratingInputFunction(ref result, tilte, inputs);
-            GeneratingPreFunction(ref result, tilte, inputs, condition);
-            //GeneratingPostFunction(ref result);
-            GeneratingMainFunction(ref result, tilte, inputs, output);
+            GeneratingInputFunction(ref result, title, inputs);
+            GeneratingCheckFunction(ref result, title, inputs, condition);
+            GeneratingOutputFunction(ref result, title, output);
+            GeneratingHandlingFunction(ref result, title, inputs, postPart, output);
+            GeneratingMainFunction(ref result, title, inputs, output);
 
+            result = GenerateAll(result);
             return result;
         }
         public static string generateVBCode(string specificationSource)
@@ -168,14 +170,14 @@ namespace WindowsFormsApp1
             }
 
             string _output = line.Replace(" ", "").Split('(', ')')[2];
-            string outputVar = _output.Split(':')[0];
+            string outputVar = _output.Replace("\n", "").Replace("\t", "").Split(':')[0];
             string outputType = GetTypes(_output.Split(':')[1]);
             output = new KeyValuePair<string, string>(outputVar, outputType);
         }
 
         public static void HandlingPreLine(string line, ref string condition)
         {
-            if (line.Length == 0)
+            if (line.Replace("\n", "").Replace("\t", "").Trim().Remove(0, 3).Length == 0)
                 condition = "true";
             else
             {
@@ -188,19 +190,57 @@ namespace WindowsFormsApp1
         {
             string paras = null;
             string code = null;
+
+            bool isArray = false;
             foreach (var input in inputs)
             {
                 paras += string.Format("ref {0} {1}", input.Value, input.Key);
                 if (input.Key != inputs.Last().Key) paras += ", ";
 
-                code += string.Format("\tConsole.WriteLine(\"Nhap {0}:\");\n", input.Key);
-                code += string.Format("\t{0} = {1}.Parse(Console.ReadLine());\n", input.Key, input.Value);
+                if (input.Value == "int[]" || input.Value == "float[]") isArray = true;
+            }
+
+            if (isArray == false)
+            {
+                foreach (var input in inputs)
+                {
+                    code += string.Format("\tConsole.WriteLine(\"Nhap {0}:\");\n", input.Key);
+                    code += string.Format("\t{0} = {1}.Parse(Console.ReadLine());\n", input.Key, input.Value);
+                }
+            }
+            else
+            {
+                string loopsVar = null;
+                string arrVar = null;
+                string arrType = null;
+                foreach (var input in inputs)
+                {
+                    if (input.Value == "int")
+                    {
+                        string pre = null;
+                        pre += string.Format("\tConsole.WriteLine(\"Nhap so phan tu {0} cua day:\");\n", input.Key);
+                        pre += string.Format("\t{0} = int.Parse(Console.ReadLine());\n", input.Key);
+                        code = pre + code;
+
+                        loopsVar = input.Key;
+                    }
+                    else
+                    {
+                        arrVar = input.Key;
+                        arrType = input.Value.Split('[', ']')[0];
+                    }
+                }
+
+                code += string.Format("\t{0} = new {1}[{2}];\n", arrVar, arrType, loopsVar);
+                code += string.Format("\tfor (int i = 0; i < {0}; i++)\n\t{{\n", loopsVar);
+                code += string.Format("\t\tConsole.WriteLine(\"Nhap phan tu {1}[{{0}}]:\", i);\n", loopsVar, arrVar);
+                code += string.Format("\t\t{0}[i] = {1}.Parse(Console.ReadLine());\n\t}}\n", arrVar, arrType);
             }
 
             generateCode += string.Format("public void Nhap_{0}({1})\n{{\n{2}}}\n\n", title, paras, code);
         }
 
-        public static void GeneratingPreFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, string condition)
+        public static void GeneratingCheckFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, string condition)
         {
             string paras = null;
             foreach (var input in inputs)
@@ -215,16 +255,23 @@ namespace WindowsFormsApp1
         {
             string code = null;
             string paras = null;
+            string ref_paras = null;
             foreach (var input in inputs)
             {
                 code += string.Format("\t{0} {1} = {2};\n", input.Value, input.Key, GetInitializeValue(input.Value));
 
-                paras += string.Format("ref {0}", input.Key);
-                if (input.Key != inputs.Last().Key) paras += ", ";
+                paras += string.Format("{0}", input.Key);
+                ref_paras += string.Format("ref {0}", input.Key);
+
+                if (input.Key != inputs.Last().Key)
+                {
+                    paras += ", ";
+                    ref_paras += ", ";
+                }
             }
             code += string.Format("\t{0} {1} = {2};\n", output.Value, output.Key, GetInitializeValue(output.Value));
             code += string.Format("\tProgram p = new Program();\n");
-            code += string.Format("\tp.Nhap_{0}({1});\n", title, paras);
+            code += string.Format("\tp.Nhap_{0}({1});\n", title, ref_paras);
             code += string.Format("\tif (p.KiemTra_{0}({1}))\n\t{{\n\t\t{2} = p.XuLy_{0}({1});\n\t\tp.Xuat_{0}({2});\n\t}}\n", title, paras, output.Key);
             code += string.Format("\telse\n\t\tConsole.WriteLine(\"Thong tin nhap khong hop le!\");\n");
             code += string.Format("\tConsole.ReadLine();\n");
@@ -238,10 +285,16 @@ namespace WindowsFormsApp1
             {
                 case "N":
                     return "int";
+                case "N*":
+                    return "int[]";
                 case "Z":
                     return "int";
+                case "Z*":
+                    return "int[]";
                 case "R":
                     return "float";
+                case "R*":
+                    return "float[]";
                 case "B":
                     return "bool";
                 case "char*":
@@ -266,7 +319,25 @@ namespace WindowsFormsApp1
                     return "null";
             }
         }
-        #endregion
+
+        public static void GeneratingOutputFunction(ref string generateCode, string title, KeyValuePair<string, string> output)
+        {
+            string code = null;
+            code = string.Format("\tConsole.WriteLine(\"Ket qua la: {{0}}\", {0});\n", output.Key);
+
+            generateCode += string.Format("public void Xuat_{0}({1} {2})\n{{\n{3}}}\n\n", title, output.Value, output.Key, code);
+        }
+
+        public static void GeneratingHandlingFunction(ref string result, string title, List<KeyValuePair<string, string>> inputs, string postPart, KeyValuePair<string, string> output)
+        {
+            string paras = null;
+            foreach (var input in inputs)
+            {
+                paras += string.Format("{0} {1}", input.Value, input.Key);
+                if (input.Key != inputs.Last().Key) paras += ", ";
+            }
+            result += string.Format("public {0} XuLy_{1}({2})\n{{\n{3}\n}}\n", output.Value, title, paras, postPart);
+        }
         #endregion
         #region router 
         public static string handlePost(string post)
@@ -288,7 +359,8 @@ namespace WindowsFormsApp1
             if (firstIndexVM == -1 && firstIndexTT == -1) // no VM and no TT
             {
                 result = handleBasicType(post);
-            } else if (firstIndexVM != -1) // VM
+            }
+            else if (firstIndexVM != -1) // VM
             {
                 if (firstIndexVM == lastIndexVM) // one VM
                 {
@@ -298,22 +370,26 @@ namespace WindowsFormsApp1
                         {
                             List<string> handled = handleTTVMIteration(post);
                             result = handled[0] + handled[1] + handled[2];
-                        } else
+                        }
+                        else
                         {
                             List<string> handled = handleVMTTIteration(post);
                             result = handled[0] + handled[1] + handled[2];
                         }
-                    } else // only one VM
+                    }
+                    else // only one VM
                     {
                         List<string> handled = handleVMIteration(post, "return false;", DIFFERENCE_OF_ARRAY_INDEX);
                         result = handled[0] + handled[1] + handled[2];
                     }
-                } else // two VMs
+                }
+                else // two VMs
                 {
                     List<string> handled = handleVMVMIteration(post);
                     result = handled[0] + handled[1] + handled[2];
                 }
-            } else if (firstIndexTT != -1) // TT
+            }
+            else if (firstIndexTT != -1) // TT
             {
                 if (firstIndexTT == lastIndexTT) // one TT
                 {
@@ -321,12 +397,14 @@ namespace WindowsFormsApp1
                     {
                         List<string> handled = handleTTVMIteration(post);
                         result = handled[0] + handled[1] + handled[2];
-                    } else // only one TT
+                    }
+                    else // only one TT
                     {
                         List<string> handled = handleTTIteration(post, "return true;", DIFFERENCE_OF_ARRAY_INDEX);
                         result = handled[0] + handled[1] + handled[2];
                     }
-                } else // two TTs
+                }
+                else // two TTs
                 {
                     List<string> handled = handleTTTTIteration(post);
                     result = handled[0] + handled[1] + handled[2];
@@ -337,6 +415,17 @@ namespace WindowsFormsApp1
 
 
             return result;
+        }
+        #endregion
+        #region AddNamespace
+        public static string GenerateAll(string input)
+        {
+            input = Regex.Replace(input, @"\r\n?|\n", "\n\t");
+            string generateCode = null;
+            generateCode += "using System;\n";
+            string _namespace = "FormalSpecification";
+            generateCode += string.Format("namespace {0}\n{{\npublic class Program\n{{\n{1}\n}}\n}}", _namespace, input);
+            return generateCode;
         }
         #endregion
         #region Handler Genarate Iteration
@@ -361,7 +450,7 @@ namespace WindowsFormsApp1
             string declarePart = $"int {indexRepresent};";
             string bodyPart = "";
             string returnPart = $"\nreturn true;";
-            string executeCodeString = "\nif(!" + exportExecuteLogicInIteration(excuteOfIteration) + ")"
+            string executeCodeString = "\nif(!(" + exportExecuteLogicInIteration(excuteOfIteration) + "))"
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
@@ -423,8 +512,8 @@ namespace WindowsFormsApp1
             string bodyPart = "";
             string returnPart = $"\nreturn true;";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "return false;","");
-            string executeCodeString ="\n" + handledVMIteration[0] + handledVMIteration[1];
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "return false;", "");
+            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
             bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
@@ -454,8 +543,8 @@ namespace WindowsFormsApp1
             string bodyPart = "";
             string returnPart = $"\nreturn true;";
 
-            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "go to breakPoint;", "");
-            string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\nbreakPoint:";
+            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "goto breakPoint;", "");
+            string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\nbreakPoint: continue;";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
             bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
@@ -485,8 +574,8 @@ namespace WindowsFormsApp1
             string bodyPart = "";
             string returnPart = $"\nreturn true;";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "go to breakPoint;", "");
-            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\nbreakPoint:";
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "goto breakPoint;", "");
+            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\nbreakPoint: continue;";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
             bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
