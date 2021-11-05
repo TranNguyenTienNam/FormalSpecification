@@ -144,6 +144,16 @@ namespace WindowsFormsApp1
         //    result = Regex.Replace(result, @"\r\n?|\n", "\n\t");
         //    return result;
         //}
+        public static string findRepresentArrayName(string input)
+        {
+            string result = "";
+
+            input.Trim();
+            int indexOfFirstOpenBounder = input.IndexOf("(");
+            result = input.Substring(0, indexOfFirstOpenBounder);
+
+            return result;
+        }
         #region Handle title and pre part
         public static void HandlingTitleLine(string line, ref string title, ref List<KeyValuePair<string, string>> inputs, ref KeyValuePair<string, string> output)
         {
@@ -344,7 +354,7 @@ namespace WindowsFormsApp1
 
             string[] splitedArray = findStringOfStartAndEndIndex(headerOfIteration).Split(new char[] { '.', '.' });
             string indexRepresent = findIndexRepresent(headerOfIteration);
-            string arrayRepresent = "a"; // function provided by Tien Nam
+            string arrayRepresent = findRepresentArrayName(excuteOfIteration); // function provided by Tien Nam
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
