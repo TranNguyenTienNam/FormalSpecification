@@ -341,11 +341,11 @@ namespace WindowsFormsApp1
         }
         #endregion
         #region router 
-        public static string handlePost(string post)
+        public static string handlePost(string input)
         {
             string result = "";
 
-            post = removeOpenAndCloseBoundBrackets(post);
+            string post = removeOpenAndCloseBoundBrackets(input);
 
             int firstIndexVM = post.IndexOf(VM_SYNTAX);
             int lastIndexVM = post.LastIndexOf(VM_SYNTAX);
