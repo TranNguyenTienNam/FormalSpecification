@@ -103,13 +103,93 @@ namespace WindowsFormsApp1
 
             return result;
         }
+        #region if type
+        public static string handleInputType(string input)
+        {
+            string result = "";
+            string[] splitedIfCondition = input.Replace("||", "|").Split('|');
+            if(splitedIfCondition.Length == 1)
+            {
+                splitedIfCondition[0] = splitedIfCondition[0].Replace("&&", "&");
+                if (splitedIfCondition[0].Split('&').Length == 1)
+                {
+
+                } else
+                {
+                    splitedIfCondition[0] = removeOpenAndCloseBoundBrackets(splitedIfCondition[0]);
+                }         
+                result += handleCondition(splitedIfCondition[0]);
+            } else
+            {
+                for(int i = 0; i< splitedIfCondition.Length; i++)
+                {
+                    splitedIfCondition[i] = removeOpenAndCloseBoundBrackets(splitedIfCondition[i]).Replace("&&","&");
+                    result += handleCondition(splitedIfCondition[i]);
+                }
+            }
+
+            return result;
+        }
+        public static string handleCondition(string input)
+        {
+            string result = "";
+
+            string[] splitedIfCondition = input.Split('&');
+
+            if(splitedIfCondition.Length == 1)
+            {
+                return handleReturnConditionLogic(splitedIfCondition[0]);
+            } else
+            {
+                result = "\n" + "if( " + splitedIfCondition[1].Trim();
+                for (int i = 2; i< splitedIfCondition.Length; i++)
+                {
+                    splitedIfCondition[i] = splitedIfCondition[i].Trim();
+                    result += " && " + splitedIfCondition[i];
+                }
+                result += " )\n{\n\t" + handleReturnConditionLogic(splitedIfCondition[0]) + "\n}";
+            }
+
+            return result;
+        }
+        public static string handleReturnConditionLogic(string input)
+        {
+            string result = "";
+
+            input = removeOpenAndCloseBoundBrackets(input);
+            string[] splitedReturnConditionLogic = input.Split('=');
+
+            result = "return " + handleBooleanReturn(splitedReturnConditionLogic[1])+ ";" ;
+
+            return result;
+        }
+        public static string handleBooleanReturn(string input)
+        {
+            string result = "";
+            input = input.Trim();
+
+            if(input.ToLower() == "false")
+            {
+                return "false";
+            } else if (input.ToLower() == "true")
+            {
+                return "true";
+            } else
+            {
+                result = input;
+            }
+
+            return result;
+        }
+        #endregion
+        #region iteration type
         public static string removeOpenAndCloseBoundBrackets(string input)
         {
             int firstOpenRoundBracket = input.IndexOf("(");
             int lastCloseRoundBracket = input.LastIndexOf(")");
 
             string importantContent = input.Substring(firstOpenRoundBracket + 1, lastCloseRoundBracket - firstOpenRoundBracket - 1);
-            return importantContent;
+            return importantContent;    
         }
         public static string exportExecuteLogicInIteration(string input)
         {
@@ -156,6 +236,7 @@ namespace WindowsFormsApp1
 
             return result;
         }
+        #endregion
         #endregion
         #region Handle title and pre part
         public static void HandlingTitleLine(string line, ref string title, ref List<KeyValuePair<string, string>> inputs, ref KeyValuePair<string, string> output)
@@ -353,15 +434,17 @@ namespace WindowsFormsApp1
             int firstIndexTT = post.IndexOf(TT_SYNTAX);
             int lastIndexTT = post.LastIndexOf(TT_SYNTAX);
 
-            List<string> splitedOfHeaderAndExecuteLogicIteration = splitInputToHeaderAndExecuteOfIteration(post);
-            string headerOfIteration = splitedOfHeaderAndExecuteLogicIteration[0];
-            string excuteOfIteration = splitedOfHeaderAndExecuteLogicIteration[1];
 
             if (firstIndexVM == -1 && firstIndexTT == -1) // no VM and no TT
             {
-                result = handleBasicType(post);
+                result = handleInputType("(" + post + ")");
+                return result;
             }
-            else if (firstIndexVM != -1) // VM
+
+            List<string> splitedOfHeaderAndExecuteLogicIteration = splitInputToHeaderAndExecuteOfIteration(post);
+            string headerOfIteration = splitedOfHeaderAndExecuteLogicIteration[0];
+            string excuteOfIteration = splitedOfHeaderAndExecuteLogicIteration[1];
+            if (firstIndexVM != -1) // VM
             {
                 if (firstIndexVM == lastIndexVM) // one VM
                 {
@@ -430,10 +513,6 @@ namespace WindowsFormsApp1
         }
         #endregion
         #region Handler Genarate Iteration
-        public static string handleBasicType(string input)
-        {
-            return "abc";
-        }
         public static List<string> handleVMIteration(string input, string breakPointString, string differenceArrayIndex)
         {
             List<string> splitedOfHeaderAndExecuteLogicIteration = splitInputToHeaderAndExecuteOfIteration(input);
