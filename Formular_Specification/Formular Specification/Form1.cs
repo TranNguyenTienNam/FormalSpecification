@@ -71,9 +71,12 @@ namespace WindowsFormsApp1
             } else
             {
                 //Generate specification to specific program language
-                generatedCSContent = Utilities.generateCSCode(tbSource.Text);
-                generatedVBContent = Utilities.generateVBCode(tbSource.Text);
-                tbGeneratedCode.Text = radioCS.Checked ? generatedCSContent : generatedVBContent;
+                //generatedCSContent = Utilities.generateCSCode(tbSource.Text);
+                //generatedVBContent = Utilities.generateVBCode(tbSource.Text);
+
+                //tbGeneratedCode.Text = radioCS.Checked ? generatedCSContent : generatedVBContent;
+                tbGeneratedCode.Text = "";
+                ChangeColor();
             }
         }
 
@@ -210,5 +213,39 @@ namespace WindowsFormsApp1
 
             }
         }
+
+        #region Change text color
+        void ChangeColor()
+        {
+            string temp = Utilities.generateCSCode(tbSource.Text);
+
+            string[] temps = temp.Split(new char[] { '|' });
+            foreach (var split in temps)
+            {
+                if (split.Contains("Console") || split.Contains("Program")) 
+                    tbGeneratedCode.SelectionColor = Color.Green;
+                else if (split.Contains("return") ||
+                    split.Contains("if") || split.Contains("else")) 
+                    tbGeneratedCode.SelectionColor = Color.Pink;
+                else if (split.Contains("using") || split.Contains("namespace") ||
+                    split.Contains("static") || split.Contains("new") ||
+                    split.Contains("public") || split.Contains("class") ||
+                    split.Contains("ref") || split.Contains("int") ||
+                    split.Contains("float") || split.Contains("string") ||
+                    split.Contains("bool") || split.Contains("void") ||
+                    split.Contains("true"))
+                    tbGeneratedCode.SelectionColor = Color.Blue;
+                else if (split.Contains("\""))
+                    tbGeneratedCode.SelectionColor = Color.Orange;
+                else if (split.Contains("Nhap_") || split.Contains("Xuat_") ||
+                    split.Contains("KiemTra_") || split.Contains("XuLy_") ||
+                    split.Contains("WriteLine") || split.Contains("ReadLine") ||
+                    split.Contains("Main"))
+                    tbGeneratedCode.SelectionColor = Color.Yellow;
+                else tbGeneratedCode.SelectionColor = Color.White;
+                tbGeneratedCode.AppendText(split);
+            }
+        }
+        #endregion
     }
 }
