@@ -129,7 +129,7 @@ namespace WindowsFormsApp1
             }
 
             if (result.IndexOf("if") != -1)
-                result += " else throw new Exception();";
+                result += " ~else~ throw new ~Exception()~;";
 
             return result;
         }
@@ -144,7 +144,7 @@ namespace WindowsFormsApp1
                 return handleReturnConditionLogic(splitedIfCondition[0]);
             } else
             {
-                result = "\n" + "if( " + splitedIfCondition[1].Trim();
+                result = "\n" + "~if~( " + splitedIfCondition[1].Trim();
                 for (int i = 2; i< splitedIfCondition.Length; i++)
                 {
                     splitedIfCondition[i] = splitedIfCondition[i].Trim();
@@ -162,7 +162,7 @@ namespace WindowsFormsApp1
             input = removeOpenAndCloseBoundBrackets(input);
             string[] splitedReturnConditionLogic = input.Split('=');
 
-            result = "return " + handleBooleanReturn(splitedReturnConditionLogic[1])+ ";" ;
+            result = "~return~ " + handleBooleanReturn(splitedReturnConditionLogic[1])+ ";" ;
 
             return result;
         }
@@ -173,10 +173,10 @@ namespace WindowsFormsApp1
 
             if(input.ToLower() == "false")
             {
-                return "false";
+                return "~false~";
             } else if (input.ToLower() == "true")
             {
-                return "true";
+                return "~true~";
             } else
             {
                 result = input;
@@ -533,14 +533,14 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"|int| {indexRepresent};";
+            string declarePart = $"~int~ {indexRepresent};";
             string bodyPart = "";
-            string returnPart = $"\n|return| true;";
-            string executeCodeString = "\nif(!(" + exportExecuteLogicInIteration(excuteOfIteration) + "))"
+            string returnPart = $"\n~return~ ~true~;";
+            string executeCodeString = "\n~if~(!(" + exportExecuteLogicInIteration(excuteOfIteration) + "))"
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -563,14 +563,14 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"|int| {indexRepresent};";
+            string declarePart = $"~int~ {indexRepresent};";
             string bodyPart = "";
-            string returnPart = $"\n|return| false;";
-            string executeCodeString = "\n|if|(" + exportExecuteLogicInIteration(excuteOfIteration) + ")"
+            string returnPart = $"\n~return~ ~false~;";
+            string executeCodeString = "\n~if~(" + exportExecuteLogicInIteration(excuteOfIteration) + ")"
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -594,15 +594,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"|int| {indexRepresent};";
+            string declarePart = $"~int~ {indexRepresent};";
             string bodyPart = "";
-            string returnPart = $"\n|return| true;";
+            string returnPart = $"\n~return~ ~true~;";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "return false;", "");
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~return~ ~false~;", "");
             string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -625,15 +625,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"|int| {indexRepresent};";
+            string declarePart = $"~int~ {indexRepresent};";
             string bodyPart = "";
-            string returnPart = $"\n|return| true;";
+            string returnPart = $"\n~return~ ~true~;";
 
-            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "goto breakPoint;", "");
-            string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\nbreakPoint: continue;";
+            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~goto~ breakPoint;", "");
+            string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\nbreakPoint: ~continue~;";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -656,15 +656,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"int {indexRepresent};";
+            string declarePart = $"~int~ {indexRepresent};";
             string bodyPart = "";
-            string returnPart = $"\n|return| true;";
+            string returnPart = $"\n~return~ ~true~;";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "goto breakPoint;", "");
-            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\nbreakPoint: continue;";
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~goto~ breakPoint;", "");
+            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\nbreakPoint: ~continue~;";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
@@ -687,15 +687,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"int {indexRepresent};";
+            string declarePart = $"~int~ {indexRepresent};";
             string bodyPart = "";
-            string returnPart = $"\n|return| false;";
+            string returnPart = $"\n~return~ ~false~;";
 
-            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "return true;", "");
+            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~return~ ~true~;", "");
             string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\nfor ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
+            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
 
             result.Add(declarePart);
