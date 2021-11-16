@@ -103,6 +103,21 @@ namespace WindowsFormsApp1
 
             return result;
         }
+        public static string handleEqualOperationInConditionStatement(string input)
+        {
+            string result = "";
+
+            int lastIndexOfEqualOperator = input.LastIndexOf('=');
+            char prefixOfEqualOperator = input[lastIndexOfEqualOperator - 1];
+            if( prefixOfEqualOperator != '!' && prefixOfEqualOperator !='=' && prefixOfEqualOperator != '>' && prefixOfEqualOperator !='<')
+            {
+                input = Regex.Replace(input, "=", "==");
+            }
+
+            result = input;
+
+            return result;
+        }
         #region if type
         public static string handleInputType(string input)
         {
@@ -130,6 +145,7 @@ namespace WindowsFormsApp1
 
             if (result.IndexOf("if") != -1)
                 result += " ~else~ throw new ~Exception()~;";
+            
 
             return result;
         }
@@ -144,10 +160,10 @@ namespace WindowsFormsApp1
                 return handleReturnConditionLogic(splitedIfCondition[0]);
             } else
             {
-                result = "\n" + "~if~( " + splitedIfCondition[1].Trim();
+                result = "\n" + "~if~( " + handleEqualOperationInConditionStatement(splitedIfCondition[1]).Trim();
                 for (int i = 2; i< splitedIfCondition.Length; i++)
                 {
-                    splitedIfCondition[i] = splitedIfCondition[i].Trim();
+                    splitedIfCondition[i] = handleEqualOperationInConditionStatement(splitedIfCondition[i]).Trim();
                     result += " && " + splitedIfCondition[i];
                 }
                 result += " )\n{\n\t" + handleReturnConditionLogic(splitedIfCondition[0]) + "\n}";
@@ -539,6 +555,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n~if~(!(" + exportExecuteLogicInIteration(excuteOfIteration) + "))"
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
+            executeCodeString = handleEqualOperationInConditionStatement(executeCodeString);
 
             bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
@@ -569,6 +586,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n~if~(" + exportExecuteLogicInIteration(excuteOfIteration) + ")"
                 + "\n{" + $"\n\t{breakPointString}" + "\n}";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
+            executeCodeString = handleEqualOperationInConditionStatement(executeCodeString);
 
             bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
                 + "\n{" + executeCodeString + "\n}";
