@@ -219,13 +219,15 @@ namespace WindowsFormsApp1
         {
             string temp = Utilities.generateCSCode(tbSource.Text);
 
-            string[] temps = temp.Split(new char[] { '|' });
+            string[] temps = temp.Split(new char[] { '~' });
             foreach (var split in temps)
             {
-                if (split.Contains("Console") || split.Contains("Program")) 
+                if (split.Contains("Console") || split.Contains("Program") ||
+                    split.Contains("Exception"))
                     tbGeneratedCode.SelectionColor = Color.Green;
-                else if (split.Contains("return") ||
-                    split.Contains("if") || split.Contains("else")) 
+                else if (split.Contains("return") || split.Contains("for") ||
+                    split.Contains("if") || split.Contains("else") ||
+                    split.Contains("continue")) 
                     tbGeneratedCode.SelectionColor = Color.Pink;
                 else if (split.Contains("using") || split.Contains("namespace") ||
                     split.Contains("static") || split.Contains("new") ||
@@ -233,7 +235,8 @@ namespace WindowsFormsApp1
                     split.Contains("ref") || split.Contains("int") ||
                     split.Contains("float") || split.Contains("string") ||
                     split.Contains("bool") || split.Contains("void") ||
-                    split.Contains("true"))
+                    split.Contains("true") || split.Contains("false") ||
+                    split.Contains("throw")) 
                     tbGeneratedCode.SelectionColor = Color.Blue;
                 else if (split.Contains("\""))
                     tbGeneratedCode.SelectionColor = Color.Orange;
