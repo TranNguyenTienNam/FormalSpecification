@@ -108,13 +108,17 @@ namespace WindowsFormsApp1
             string result = "";
 
             int lastIndexOfEqualOperator = input.LastIndexOf('=');
-            char prefixOfEqualOperator = input[lastIndexOfEqualOperator - 1];
-            if( prefixOfEqualOperator != '!' && prefixOfEqualOperator !='=' && prefixOfEqualOperator != '>' && prefixOfEqualOperator !='<')
-            {
-                input = Regex.Replace(input, "=", "==");
-            }
 
-            result = input;
+            if(lastIndexOfEqualOperator != -1)
+            {
+                char prefixOfEqualOperator = input[lastIndexOfEqualOperator - 1];
+                if (prefixOfEqualOperator != '!' && prefixOfEqualOperator != '=' && prefixOfEqualOperator != '>' && prefixOfEqualOperator != '<')
+                {
+                    input = Regex.Replace(input, "=", "==");
+                }
+
+                result = input;
+            }
 
             return result;
         }
