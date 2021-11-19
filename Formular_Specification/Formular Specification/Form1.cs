@@ -217,7 +217,10 @@ namespace WindowsFormsApp1
         #region Change text color
         void ChangeColor()
         {
-            string temp = Utilities.generateCSCode(tbSource.Text);
+            generatedCSContent = Utilities.generateCSCode(tbSource.Text);
+            generatedVBContent = Utilities.generateVBCode(tbSource.Text);
+            string temp = radioCS.Checked ? generatedCSContent : generatedVBContent;
+
 
             string[] temps = temp.Split(new char[] { '~' });
             foreach (var split in temps)
