@@ -138,7 +138,7 @@ namespace WindowsFormsApp1
             }
 
             if (result.IndexOf("If") != -1)
-                result += " ~Else~ ~Throw~ ~New~ ~Exception~()\nEnd If";
+                result += " ~Else~ ~Throw~ ~New~ ~Exception~()\n~End If~";
             result = Regex.Replace(result, "%", " Mod ");
 
             return result;
@@ -158,9 +158,9 @@ namespace WindowsFormsApp1
                 for (int i = 2; i< splitedIfCondition.Length; i++)
                 {
                     splitedIfCondition[i] = handleEqualOperationInConditionStatement(splitedIfCondition[i]).Trim();
-                    result += " AndAlso " + splitedIfCondition[i];
+                    result += " ~AndAlso~ " + splitedIfCondition[i];
                 }
-                result += " ) Then\n\t" + handleReturnConditionLogic(splitedIfCondition[0]) + "\nEnd If";
+                result += " ) ~Then~\n\t" + handleReturnConditionLogic(splitedIfCondition[0]) + "\n~End If~";
             }
 
             return result;
@@ -326,13 +326,13 @@ namespace WindowsFormsApp1
                     }
                 }
 
-                code += string.Format("\t{0} = ~New~ {1}({2} - 1) {{}}\n", arrVar, arrType, loopsVar);
-                code += string.Format("\tFor Dim i As Integer = 0 to {0} - 1\n", loopsVar);
+                code += string.Format("\t~{0}~ = ~New~ ~{1}~(~{2}~ - 1) {{}}\n", arrVar, arrType, loopsVar);
+                code += string.Format("\t~For~ ~Dim~ i ~As~ ~Integer~ ~= 0~ ~To~ ~{0}~ - 1\n", loopsVar);
                 code += string.Format("\t\t~Console~.~WriteLine~(~\"Nhap phan tu {1}[{{0}}]:\"~, i)\n", loopsVar, arrVar);
-                code += string.Format("\t\t{0}(i) = {1}.~Parse~(~Console~.~ReadLine~())\nNext\n", arrVar, arrType);
+                code += string.Format("\t\t{0}(i) = {1}.~Parse~(~Console~.~ReadLine~())\n\t~Next~\n", arrVar, arrType);
             }
 
-            generateCode += string.Format("~\tPublic~ ~Sub~ ~Nhap_{0}~(~{1}~)~\n{2}End Sub\n\n", title, paras, code);
+            generateCode += string.Format("~\tPublic~ ~Sub~ ~Nhap_{0}~(~{1}~)~\n{2}~End Sub~\n\n", title, paras, code);
         }
 
         public static void GeneratingCheckFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, string condition)
@@ -340,10 +340,13 @@ namespace WindowsFormsApp1
             string paras = null;
             foreach (var input in inputs)
             {
-                paras += string.Format("ByVal {1} As ~{0}~", input.Value, input.Key);
+                paras += string.Format("~ByVal~ ~{1}~ As ~{0}~", input.Value, input.Key);
                 if (input.Key != inputs.Last().Key) paras += ", ";
             }
-            generateCode += string.Format("~Public~ ~Function~ ~KiemTra_{0}~({1}) As Boolean\n\t~Return~ {2}\nEnd Function\n\n", title, paras, condition);
+
+            condition = condition.Replace("&&", " ~AndAlso~ ");
+
+            generateCode += string.Format("~Public~ ~Function~ ~KiemTra_{0}~(~{1}~)~ As~ ~Boolean~\n\t~Return~ {2}\n~End Function~\n\n", title, paras, condition);
         }
 
         public static void GeneratingMainFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, KeyValuePair<string, string> output)
@@ -353,7 +356,7 @@ namespace WindowsFormsApp1
             string ref_paras = null;
             foreach (var input in inputs)
             {
-                code += string.Format("\tDim {1} As ~{0}~ = ~{2}~\n", input.Value, input.Key, GetInitializeValue(input.Value));
+                code += string.Format("\t~Dim~ ~{1}~ As ~{0}~ = ~{2}~\n", input.Value, input.Key, GetInitializeValue(input.Value));
 
                 paras += string.Format("{0}", input.Key);
                 ref_paras += string.Format("~{0}~", input.Key);
@@ -364,14 +367,14 @@ namespace WindowsFormsApp1
                     ref_paras += ", ";
                 }
             }
-            code += string.Format("\tDim {1} As ~{0}~ = {2}~\n", output.Value, output.Key, GetInitializeValue(output.Value));
-            code += string.Format("\tDim p As ~Program~ = ~New~ ~Program~()\n");
+            code += string.Format("\t~Dim~ ~{1}~ As ~{0}~ = {2}~\n", output.Value, output.Key, GetInitializeValue(output.Value));
+            code += string.Format("\t~Dim~ ~p~ As ~Program~ = ~New~ ~Program~()\n");
             code += string.Format("\tp.~Nhap_{0}~({1})\n", title, ref_paras);
-            code += string.Format("\t~If~ p.~KiemTra_{0}~({1}) Then\n\t\t{2} = p.~XuLy_{0}~({1})\n\t\tp.~Xuat_{0}~({2})\n", title, paras, output.Key);
+            code += string.Format("\t~If~ p.~KiemTra_{0}~(~{1}~) ~Then~\n\t\t~{2}~ = p.~XuLy_{0}~({1})\n\t\tp.~Xuat_{0}~({2})\n", title, paras, output.Key);
             code += string.Format("\t~Else~\n\t\t~Console~.~WriteLine~(~\"Thong tin nhap khong hop le!\"~)\n\tEnd If\n");
             code += string.Format("\t\t~Console~.~ReadLine~()\n");
 
-            generateCode += string.Format("~Public~ ~Shared~ ~Sub~ ~Main~(ByVal args As String())~\n{0}~End Sub~", code);
+            generateCode += string.Format("~Public~ ~Shared~ ~Sub~ ~Main~(~ByVal~ args ~As~ ~String~())~\n{0}~End Sub~", code);
         }
 
         public static string GetTypes(string typeFL)
@@ -420,7 +423,7 @@ namespace WindowsFormsApp1
             string code = null;
             code = string.Format("\t~Console~.~WriteLine~(~\"Ket qua la: {{0}}\"~, {0})\n", output.Key);
 
-            generateCode += string.Format("~Public~ ~Sub~ ~Xuat_{0}~(ByVal {2} As {1})\n{3}End Sub\n\n", title, output.Value, output.Key, code);
+            generateCode += string.Format("~Public~ ~Sub~ ~Xuat_{0}~(~ByVal~ ~{2}~ ~As~ ~{1}~)~\n~{3}~End Sub~\n\n", title, output.Value, output.Key, code);
         }
 
         public static void GeneratingHandlingFunction(ref string result, string title, List<KeyValuePair<string, string>> inputs, string postPart, KeyValuePair<string, string> output)
@@ -428,13 +431,13 @@ namespace WindowsFormsApp1
             string paras = null;
             foreach (var input in inputs)
             {
-                paras += string.Format("ByVal {1} As {0}", input.Value, input.Key);
+                paras += string.Format("~ByVal~ ~{1}~ ~As~ ~{0}~", input.Value, input.Key);
                 if (input.Key != inputs.Last().Key) paras += "~,~ ";
             }
 
             postPart = Regex.Replace(postPart, @"\r\n?|\n", "\n\t"); // TODO: Tab
 
-            result += string.Format("~Public~ ~Function~ ~XuLy_{1}~~(~{2}~)~ As {0}~\n\t{3}\n~End Function~\n", output.Value, title, paras, postPart);
+            result += string.Format("~Public~ ~Function~ ~XuLy_{1}~~(~{2}~)~ ~As~ ~{0}~\n\t~{3}~\n~End Function~\n", output.Value, title, paras, postPart);
         }
         #endregion
         #region router 
@@ -522,7 +525,7 @@ namespace WindowsFormsApp1
         {
             input = Regex.Replace(input, @"\r\n?|\n", "\n\t");
             string generateCode = null;
-            generateCode += "~Import~ System\n";
+            generateCode += "~Imports~ System\n";
             string _namespace = "FormalSpecification";
             generateCode += string.Format("~Namespace~ ~{0}~\n~Public~ ~Class~ ~Program~\n{1}\nEnd Class\nEnd Namespace", _namespace, input);
             return generateCode;
@@ -543,16 +546,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"Dim {indexRepresent} As ~Integer~";
+            string declarePart = $"~Dim~ ~{indexRepresent}~ ~As~ ~Integer~";
             string bodyPart = "";
             string returnPart = $"\n~Return~ ~True";
-            string executeCodeString = "\n~If~(Not(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~))~ Then"
-                + "\n" + $"\n\t{breakPointString}" + "\nEnd If";
+            string executeCodeString = "\n~If~(~Not~(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~))~ ~Then~"
+                + "\n" + $"\n\t{breakPointString}" + "\n~End If~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
             executeCodeString = handleEqualOperationInConditionStatement(executeCodeString);
 
-            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} To {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
-                + "\n" + executeCodeString + "\nNext";
+            bodyPart = $"\n~For~ ~{indexRepresent}~ = ~{startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}~"
+                + "\n" + executeCodeString + "\n~Next~";
 
             result.Add(declarePart);
             result.Add(bodyPart);
@@ -574,15 +577,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"Dim {indexRepresent} As ~Integer~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
             string returnPart = $"\n~Return~ ~False~";
             string executeCodeString = "\n~If~(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~)~ Then"
-                + "\n" + $"\n\t{breakPointString}" + "\nEnd If";
+                + "\n" + $"\n\t{breakPointString}" + "\n~End If~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
             executeCodeString = handleEqualOperationInConditionStatement(executeCodeString);
 
-            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} to {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
                 + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
@@ -614,7 +617,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} to {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
                 + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
@@ -637,15 +640,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"Dim {indexRepresent} As ~Integer~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
             string returnPart = $"\n~Return~ ~True~";
 
-            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~Goto~ ~breakPoint~", "");
+            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~GoTo~ ~breakPoint~", "");
             string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\n~breakPoint~:~ ~Continue~ ~For~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} to {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
                 + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
@@ -668,15 +671,15 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"Dim {indexRepresent} As ~Integer~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
             string returnPart = $"\n~Return~ ~True~";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~Goto~ ~breakPoint~", "");
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~GoTo~ ~breakPoint~", "");
             string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\n~breakPoint~:~ ~Continue~ ~For~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} to {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
                 + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
@@ -699,7 +702,7 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"Dim {indexRepresent} As ~Integer~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
             string returnPart = $"\n~Return~ ~False~;";
 
@@ -707,7 +710,7 @@ namespace WindowsFormsApp1
             string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} to {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
                 + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);

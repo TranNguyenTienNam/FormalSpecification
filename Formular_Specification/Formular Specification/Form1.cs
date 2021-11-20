@@ -219,37 +219,80 @@ namespace WindowsFormsApp1
         {
             generatedCSContent = Utilities.generateCSCode(tbSource.Text);
             generatedVBContent = Utilities.generateVBCode(tbSource.Text);
+
             string temp = radioCS.Checked ? generatedCSContent : generatedVBContent;
-
-
             string[] temps = temp.Split(new char[] { '~' });
-            foreach (var split in temps)
+
+            if (radioCS.Checked == true)
             {
-                if (split.Contains("Console") || split.Contains("Program") ||
-                    split.Contains("Exception"))
-                    tbGeneratedCode.SelectionColor = Color.Green;
-                else if (split.Contains("return") || split.Contains("for") ||
-                    split.Contains("if") || split.Contains("else") ||
-                    split.Contains("continue")) 
-                    tbGeneratedCode.SelectionColor = Color.Pink;
-                else if (split.Contains("using") || split.Contains("namespace") ||
-                    split.Contains("static") || split.Contains("new") ||
-                    split.Contains("public") || split.Contains("class") ||
-                    split.Contains("ref") || split.Contains("int") ||
-                    split.Contains("float") || split.Contains("string") ||
-                    split.Contains("bool") || split.Contains("void") ||
-                    split.Contains("true") || split.Contains("false") ||
-                    split.Contains("throw")) 
-                    tbGeneratedCode.SelectionColor = Color.Blue;
-                else if (split.Contains("\""))
-                    tbGeneratedCode.SelectionColor = Color.Orange;
-                else if (split.Contains("Nhap_") || split.Contains("Xuat_") ||
-                    split.Contains("KiemTra_") || split.Contains("XuLy_") ||
-                    split.Contains("WriteLine") || split.Contains("ReadLine") ||
-                    split.Contains("Main"))
-                    tbGeneratedCode.SelectionColor = Color.Yellow;
-                else tbGeneratedCode.SelectionColor = Color.White;
-                tbGeneratedCode.AppendText(split);
+                // C#
+                foreach (var split in temps)
+                {
+                    if (split.Contains("Console") || split.Contains("Program") ||
+                        split.Contains("Exception"))
+                        tbGeneratedCode.SelectionColor = Color.Green;
+                    else if (split.Contains("return") || split.Contains("for") ||
+                        split.Contains("if") || split.Contains("else") ||
+                        split.Contains("continue") || split.Contains("goto"))
+                        tbGeneratedCode.SelectionColor = Color.Pink;
+                    else if (split.Contains("using") || split.Contains("namespace") ||
+                        split.Contains("static") || split.Contains("new") ||
+                        split.Contains("public") || split.Contains("class") ||
+                        split.Contains("ref") || split.Contains("int") ||
+                        split.Contains("float") || split.Contains("string") ||
+                        split.Contains("bool") || split.Contains("void") ||
+                        split.Contains("true") || split.Contains("false") ||
+                        split.Contains("throw"))
+                        tbGeneratedCode.SelectionColor = Color.Blue;
+                    else if (split.Contains("\""))
+                        tbGeneratedCode.SelectionColor = Color.Orange;
+                    else if (split.Contains("Nhap_") || split.Contains("Xuat_") ||
+                        split.Contains("KiemTra_") || split.Contains("XuLy_") ||
+                        split.Contains("WriteLine") || split.Contains("ReadLine") ||
+                        split.Contains("Main") || split.Contains("Parse"))
+                        tbGeneratedCode.SelectionColor = Color.Yellow;
+                    else tbGeneratedCode.SelectionColor = Color.White;
+                    tbGeneratedCode.AppendText(split);
+                }
+            }
+            else
+            {
+                // VB
+                foreach (var split in temps)
+                {
+                    if (split.Contains("Imports") || split.Contains("Namespace") ||
+                        split.Contains("Public") || split.Contains("Class") ||
+                        split.Contains("Sub") || split.Contains("Function") ||
+                        split.Contains("End Sub") || split.Contains("End Function") ||
+                        split.Contains("End Class") || split.Contains("End Namespace") ||
+                        split.Contains("True") || split.Contains("False") ||
+                        split.Contains("ByRef") || split.Contains("ByVal") ||
+                        split.Contains("Single") || split.Contains("Integer") ||
+                        split.Contains("String") || split.Contains("Boolean") ||
+                        split.Contains("Dim") || split.Contains("Shared") ||
+                        split.Contains("AndAlso") || split.Contains("Throw") ||
+                        split.Contains("New") || split.Contains("As") ||
+                        split.Contains("Not") || split.Contains("GoTo"))
+                        tbGeneratedCode.SelectionColor = Color.Blue;
+                    else if (split.Contains("Return") || split.Contains("For") ||
+                        split.Contains("If") || split.Contains("Else") ||
+                        split.Contains("End If") || split.Contains("Next") ||
+                        split.Contains("To") ||
+                        split.Contains("Continue") || split.Contains("Then"))
+                        tbGeneratedCode.SelectionColor = Color.Pink;
+                    else if (split.Contains("Nhap_") || split.Contains("Xuat_") ||
+                        split.Contains("KiemTra_") || split.Contains("XuLy_") ||
+                        split.Contains("WriteLine") || split.Contains("ReadLine") ||
+                        split.Contains("Main") || split.Contains("Parse"))
+                        tbGeneratedCode.SelectionColor = Color.Yellow;
+                    else if (split.Contains("\""))
+                        tbGeneratedCode.SelectionColor = Color.Orange;
+                    else if (split.Contains("Console") || split.Contains("Program") ||
+                        split.Contains("Exception"))
+                        tbGeneratedCode.SelectionColor = Color.Green;
+                    else tbGeneratedCode.SelectionColor = Color.White;
+                    tbGeneratedCode.AppendText(split);
+                }
             }
         }
         #endregion
