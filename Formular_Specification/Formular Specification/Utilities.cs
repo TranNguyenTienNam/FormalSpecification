@@ -14,6 +14,7 @@ namespace WindowsFormsApp1
         static string DIFFERENCE_OF_ARRAY_INDEX = "-1";
         static string VM_SYNTAX = "VM";
         static string TT_SYNTAX = "TT";
+        public static string className = "";
         #region hight-level generate function 
         public static string generateCSCode(string specificationSource)
         {
@@ -73,6 +74,15 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Please generate code", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+        public static void copyFile(string sourcePath, string desPath)
+        {
+            File.Copy(sourcePath, desPath);
+        }
+        public static void deleteFolder(string sourcePath)
+        {
+            DirectoryInfo directory = new DirectoryInfo(sourcePath);
+            directory.Delete();
         }
         #endregion
         #region sub-handler
@@ -532,7 +542,7 @@ namespace WindowsFormsApp1
             string generateCode = null;
             generateCode += "~using~ System;\n";
             string _namespace = "FormalSpecification";
-            generateCode += string.Format("~namespace~ ~{0}~\n~{{~\n~public~ ~class~ ~Program~\n{{\n{1}\n}}\n}}", _namespace, input);
+            generateCode += string.Format("~namespace~ ~{0}~\n~{{~\n~public~ ~class~ ~{2}~\n{{\n{1}\n}}\n}}", _namespace, input,className);
             return generateCode;
         }
         #endregion

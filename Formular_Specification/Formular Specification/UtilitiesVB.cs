@@ -14,6 +14,7 @@ namespace WindowsFormsApp1
         static string DIFFERENCE_OF_ARRAY_INDEX = "-1";
         static string VM_SYNTAX = "VM";
         static string TT_SYNTAX = "TT";
+        public static string className = "";
         #region hight-level generate function 
         public static string generateCSCode(string specificationSource)
         {
@@ -138,7 +139,11 @@ namespace WindowsFormsApp1
             }
 
             if (result.IndexOf("If") != -1)
-                result += " ~Else~ ~Throw~ ~New~ ~Exception~()\n~End If~";
+            {
+                int indexOfLastEndIf = result.LastIndexOf("End If");
+                result = result.Substring(0, indexOfLastEndIf);
+                result += "~Else~ ~Throw~ ~New~ ~Exception~()\n~End If~";
+            }
             result = Regex.Replace(result, "%", " Mod ");
 
             return result;
@@ -527,7 +532,7 @@ namespace WindowsFormsApp1
             string generateCode = null;
             generateCode += "~Imports~ System\n";
             string _namespace = "FormalSpecification";
-            generateCode += string.Format("~Namespace~ ~{0}~\n~Public~ ~Class~ ~Program~\n{1}\nEnd Class\nEnd Namespace", _namespace, input);
+            generateCode += string.Format("~Namespace~ ~{0}~\n~Public~ ~Class~ ~{2}~\n{1}\nEnd Class\nEnd Namespace", _namespace, input,className);
             return generateCode;
         }
         #endregion

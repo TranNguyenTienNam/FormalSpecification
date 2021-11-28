@@ -18,17 +18,24 @@ namespace WindowsFormsApp1
     {
         public static string FRAME_WORK_VERSION = "v4.0";
         public static string EXTENSION_COMPILE_NAME = "exe";
-        public static string TEMP_EXECUTE_FILE_NAME = "temp" + EXTENSION_COMPILE_NAME.ToUpper() + "File";
+        public static string TEMP_EXECUTE_FILE_NAME = "NewSpecificationFile";
         public static string DEFAULT_NEW_NAME_FILE = "NewSpecificationFile";
         public static string DEFAUTL_NEW_GENERATED_FOLDER = "Generated";
         public static string DEFAULT_SLASH = "\\";
         public static string EXTENSION_CS_FILE = ".cs";
         public static string EXTENSION_VB_FILE = ".vb";
+        public static string EXTENSION_TXT_FILE = ".txt";
+        public static string EXTENSION_EXE_FILE = ".exe";
 
         public string openedSourcePath = "";
         public string openedSourceName = "";
+        public string savedPath = "";
         public string generatedCSContent = "";
         public string generatedVBContent = "";
+        public string generatedCSContentColored = "";
+        public string generatedVBContentColored = "";
+        public string compileExeFileAddress = "";
+        public string defaultClassName = "Program";
         public Form1()
         {
             InitializeComponent();
@@ -36,31 +43,43 @@ namespace WindowsFormsApp1
 
         private void btnRun_Click(object sender, EventArgs e)
         {
+           startProject(compileExeFileAddress);
+        }
+        private string compileProject()
+        {
             if (tbGeneratedCode.Text == "")
             {
                 MessageBox.Show("Please generate code", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            } else
+                throw new Exception();
+            }
+            else
             {
-                string outputAddress = openedSourcePath + DEFAULT_SLASH + (tbOutputName.Text == "" ? TEMP_EXECUTE_FILE_NAME:tbOutputName.Text) + "." + EXTENSION_COMPILE_NAME;
+                string outputAddress = (tbOutputName.Text == "" ? TEMP_EXECUTE_FILE_NAME : tbOutputName.Text) + "." + EXTENSION_COMPILE_NAME;
                 tbStatus.Clear();
                 CSharpCodeProvider csc = new CSharpCodeProvider(new Dictionary<string, string>()
                 { { "CompilerVersion", FRAME_WORK_VERSION } });
                 CompilerParameters parameters = new CompilerParameters();
                 parameters.OutputAssembly = outputAddress;
                 parameters.GenerateExecutable = true;
-                CompilerResults results = csc.CompileAssemblyFromSource(parameters, tbGeneratedCode.Text);
+                CompilerResults results = csc.CompileAssemblyFromSource(parameters, generatedCSContentColored);
                 if (results.Errors.HasErrors)
                 {
                     results.Errors.Cast<CompilerError>().ToList().ForEach(
                         error => tbStatus.Text += error.ErrorText + "\r\n");
+                    throw new Exception();
                 }
                 else
                 {
                     tbStatus.Text = "-----Build Succeeded-----";
 
                 }
-                Process.Start(outputAddress);
+                return outputAddress;
             }
+
+        }
+        private void startProject(string outputAddress)
+        {
+            Process.Start(outputAddress);
         }
 
         private void btnGenerate_Click(object sender, EventArgs e)
@@ -76,7 +95,16 @@ namespace WindowsFormsApp1
 
                 //tbGeneratedCode.Text = radioCS.Checked ? generatedCSContent : generatedVBContent;
                 tbGeneratedCode.Text = "";
-                ChangeColor();
+                try
+                {
+                    ChangeColor();
+                    compileExeFileAddress = compileProject();
+                } catch (Exception ex)
+                {
+                    MessageBox.Show("Syntax error!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    tbGeneratedCode.Text = "";
+                    tbStatus.Text = "";
+                }
             }
         }
 
@@ -122,20 +150,21 @@ namespace WindowsFormsApp1
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if(tbGeneratedCode.Text == "")
+            string oldGenaratePath = "";
+            btnGenerate_Click(btnGenerate, new EventArgs());
+            if (compileExeFileAddress == "")
             {
-                MessageBox.Show("Please generate code", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            if (openedSourceName == "" && openedSourcePath == "")
+            if (/*savedPath == ""*/true)
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = "Save text Files";
-                saveFileDialog.DefaultExt = "txt";
-                saveFileDialog.Filter = "Text files (*.txt)|*.txt";
+                saveFileDialog.Title = "Save files";
+                //saveFileDialog.DefaultExt = "txt";
+                //saveFileDialog.Filter = "Text files (*.txt)|*.txt";
                 saveFileDialog.FilterIndex = 1;
                 saveFileDialog.RestoreDirectory = true;
-                saveFileDialog.FileName = DEFAULT_NEW_NAME_FILE;
+                saveFileDialog.FileName = tbOutputName.Text == "" ? DEFAULT_NEW_NAME_FILE : tbOutputName.Text;
                 // Set validate names and check file exists to false otherwise windows will
                 // not let you select "Folder Selection."
                 // Always default to Folder Selection.
@@ -143,40 +172,50 @@ namespace WindowsFormsApp1
                 {
                     string fileName = Path.GetFileName(saveFileDialog.FileName);
                     string path = Path.GetDirectoryName(saveFileDialog.FileName); // get path of new specification file
-                    string generatedPathFolder = path + DEFAULT_SLASH + DEFAUTL_NEW_GENERATED_FOLDER + fileName;
+                    string generatedPathFolder = path + DEFAULT_SLASH /*+ DEFAUTL_NEW_GENERATED_FOLDER*/ + fileName;
                     string generatedCSFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(fileName) 
                         + EXTENSION_CS_FILE; // set full path for generated CS file
                     string generatedVBFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(fileName)
                        + EXTENSION_VB_FILE; // set full path for generated CS file
+                    string generatedTXTFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(fileName)
+                       + EXTENSION_TXT_FILE; // set full path for generated CS file
+                    string generatedEXEFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(fileName)
+                       + EXTENSION_EXE_FILE; // set full path for generated CS file
 
                     //write content
-                    Utilities.writeContentToSave(saveFileDialog.FileName, tbSource.Text);
                     Utilities.createAFolder(generatedPathFolder); //create a folder for generated file
-                    Utilities.writeContentToSave(generatedCSFullPath, tbGeneratedCode.Text);
-                    Utilities.writeContentToSave(generatedVBFullPath, tbGeneratedCode.Text);
+                    Utilities.writeContentToSave(generatedTXTFullPath, tbSource.Text);
+                    Utilities.writeContentToSave(generatedCSFullPath, generatedCSContentColored);
+                    Utilities.writeContentToSave(generatedVBFullPath, generatedVBContentColored);
+                    Utilities.copyFile(compileExeFileAddress, generatedEXEFullPath);
 
                     MessageBox.Show("Save completed", "Inform", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     tbOutputName.Text = fileName;
-
+                    savedPath = path;
+                    oldGenaratePath = generatedPathFolder;
                 }
             }
-            else
-            {
-                string generatedPathFolder = openedSourcePath + DEFAULT_SLASH + DEFAUTL_NEW_GENERATED_FOLDER + openedSourceName;
-                string generatedCSFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(openedSourceName)
-                    + EXTENSION_CS_FILE; // set full path for generated CS file
-                string generatedVBFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(openedSourceName)
-                   + EXTENSION_VB_FILE; // set full path for generated CS file
+            //else
+            //{
+            //    if (oldGenaratePath != "")
+            //        Utilities.deleteFolder(oldGenaratePath);
+            //    string generatedPathFolder = savedPath + DEFAULT_SLASH + tbOutputName.Text;
+            //    string generatedCSFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(tbOutputName.Text)
+            //        + EXTENSION_CS_FILE; // set full path for generated CS file
+            //    string generatedVBFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(tbOutputName.Text)
+            //       + EXTENSION_VB_FILE; // set full path for generated CS file
+            //    string generatedTXTFullPath = generatedPathFolder + DEFAULT_SLASH + Utilities.getFileNameWithoutExtension(tbOutputName.Text)
+            //           + EXTENSION_TXT_FILE; // set full path for generated CS file
 
-                //write content
-                Utilities.writeContentToSave(Path.Combine(openedSourcePath,openedSourceName), tbSource.Text);
-                Utilities.createAFolder(generatedPathFolder);
-                Utilities.writeContentToSave(generatedCSFullPath, tbGeneratedCode.Text);
-                Utilities.writeContentToSave(generatedVBFullPath, tbGeneratedCode.Text);
+            //    //write content
+            //    Utilities.createAFolder(generatedPathFolder);
+            //    Utilities.writeContentToSave(generatedTXTFullPath, tbSource.Text);
+            //    Utilities.writeContentToSave(generatedCSFullPath, generatedCSContentColored);
+            //    Utilities.writeContentToSave(generatedVBFullPath, generatedVBContentColored);
 
-                MessageBox.Show("Save completed", "Inform", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
+            //    MessageBox.Show("Save completed", "Inform", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            //}
         }
 
         private void saveAsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -217,6 +256,8 @@ namespace WindowsFormsApp1
         #region Change text color
         void ChangeColor()
         {
+            Utilities.className = tbClassName.Text == "" ? defaultClassName : tbClassName.Text;
+            UtilitiesVB.className = tbClassName.Text == "" ? defaultClassName : tbClassName.Text;
             generatedCSContent = Utilities.generateCSCode(tbSource.Text);
             generatedVBContent = Utilities.generateVBCode(tbSource.Text);
 
@@ -228,7 +269,7 @@ namespace WindowsFormsApp1
                 // C#
                 foreach (var split in temps)
                 {
-                    if (split.Contains("Console") || split.Contains("Program") ||
+                    if (split.Contains("Console") || split.Contains(Utilities.className) ||
                         split.Contains("Exception"))
                         tbGeneratedCode.SelectionColor = Color.Green;
                     else if (split.Contains("return") || split.Contains("for") ||
@@ -287,13 +328,32 @@ namespace WindowsFormsApp1
                         tbGeneratedCode.SelectionColor = Color.Yellow;
                     else if (split.Contains("\""))
                         tbGeneratedCode.SelectionColor = Color.Orange;
-                    else if (split.Contains("Console") || split.Contains("Program") ||
+                    else if (split.Contains("Console") || split.Contains(UtilitiesVB.className) ||
                         split.Contains("Exception"))
                         tbGeneratedCode.SelectionColor = Color.Green;
                     else tbGeneratedCode.SelectionColor = Color.White;
                     tbGeneratedCode.AppendText(split);
                 }
             }
+
+            #region C# fixed
+            string temp2 = generatedCSContent;
+            string[] temps2 = temp2.Split(new char[] { '~' });
+            generatedCSContentColored = "";
+            foreach (var split in temps2)
+            {
+                generatedCSContentColored += split;
+            }
+
+            temp2 = generatedVBContent;
+            temps2 = temp2.Split(new char[] { '~' });
+            generatedVBContentColored = "";
+            foreach (var split in temps2)
+            {
+                generatedVBContentColored += split;
+            }
+
+            #endregion
         }
         #endregion
     }
