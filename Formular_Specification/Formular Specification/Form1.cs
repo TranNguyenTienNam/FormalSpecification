@@ -47,6 +47,7 @@ namespace WindowsFormsApp1
             InitializeComponent();
 
             _editingHistory.Push(tbSource.Text);
+            toolStripBtnRedo.Enabled = false;
         }
 
         private void btnRun_Click(object sender, EventArgs e)
