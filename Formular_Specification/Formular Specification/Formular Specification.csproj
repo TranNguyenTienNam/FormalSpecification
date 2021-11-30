@@ -60,24 +60,25 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Utilities.cs" />
     <Compile Include="UtilitiesVB.cs" />
     <EmbeddedResource Include="Form1.resx">
       <DependentUpon>Form1.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="FormTest.resx">
       <DependentUpon>FormTest.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DependentUpon>Resources.resx</DependentUpon>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -91,9 +92,35 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\copy.png" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Resources\IconsMenu\new-file.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\diskette.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\doc.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\folder.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\new-document.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\open.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\redo-arrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\scissors.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\IconsMenu\back-arrow.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
