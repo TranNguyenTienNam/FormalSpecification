@@ -31,7 +31,6 @@ namespace WindowsFormsApp1
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnGenerate = new System.Windows.Forms.Button();
-            this.tbGeneratedCode = new System.Windows.Forms.TextBox();
             this.tbStatus = new System.Windows.Forms.TextBox();
             this.tbOutputName = new System.Windows.Forms.TextBox();
             this.btnRun = new System.Windows.Forms.Button();
@@ -42,7 +41,6 @@ namespace WindowsFormsApp1
             this.newToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.exiteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -68,12 +66,15 @@ namespace WindowsFormsApp1
             this.labelGenerateStatus = new System.Windows.Forms.Label();
             this.labelBuildStatus = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.tbGeneratedCode = new System.Windows.Forms.RichTextBox();
             this.panel4 = new System.Windows.Forms.Panel();
             this.panel5 = new System.Windows.Forms.Panel();
-            this.tbSource = new System.Windows.Forms.TextBox();
+            this.tbSource = new System.Windows.Forms.RichTextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.radioCS = new System.Windows.Forms.RadioButton();
             this.radioVB = new System.Windows.Forms.RadioButton();
+            this.tbClassName = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
@@ -97,30 +98,15 @@ namespace WindowsFormsApp1
             this.btnGenerate.Text = "Generate";
             this.btnGenerate.UseVisualStyleBackColor = false;
             this.btnGenerate.Click += new System.EventHandler(this.btnGenerate_Click);
-            // 
-            // tbGeneratedCode
-            // 
-            this.tbGeneratedCode.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbGeneratedCode.Enabled = false;
-            this.tbGeneratedCode.Location = new System.Drawing.Point(4, 5);
-            this.tbGeneratedCode.Margin = new System.Windows.Forms.Padding(2);
-            this.tbGeneratedCode.Multiline = true;
-            this.tbGeneratedCode.Name = "tbGeneratedCode";
-            this.tbGeneratedCode.ReadOnly = true;
-            this.tbGeneratedCode.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbGeneratedCode.Size = new System.Drawing.Size(599, 392);
-            this.tbGeneratedCode.TabIndex = 1;
-            // 
+            //
             // tbStatus
             // 
             this.tbStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.tbStatus.Cursor = System.Windows.Forms.Cursors.Default;
-            this.tbStatus.Location = new System.Drawing.Point(5, 6);
-            this.tbStatus.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tbStatus.Location = new System.Drawing.Point(4, 5);
+            this.tbStatus.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbStatus.Multiline = true;
             this.tbStatus.Name = "tbStatus";
             this.tbStatus.ReadOnly = true;
@@ -133,12 +119,10 @@ namespace WindowsFormsApp1
             this.tbOutputName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbOutputName.Enabled = false;
             this.tbOutputName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbOutputName.Location = new System.Drawing.Point(161, 26);
-            this.tbOutputName.Margin = new System.Windows.Forms.Padding(2);
+            this.tbOutputName.Location = new System.Drawing.Point(161, 43);
+            this.tbOutputName.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.tbOutputName.Name = "tbOutputName";
-            this.tbOutputName.ReadOnly = true;
             this.tbOutputName.Size = new System.Drawing.Size(136, 23);
             this.tbOutputName.TabIndex = 3;
             // 
@@ -161,7 +145,7 @@ namespace WindowsFormsApp1
             this.labelClassName.AutoSize = true;
             this.labelClassName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelClassName.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.labelClassName.Location = new System.Drawing.Point(-1, 29);
+            this.labelClassName.Location = new System.Drawing.Point(-1, 43);
             this.labelClassName.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.labelClassName.Name = "labelClassName";
             this.labelClassName.Size = new System.Drawing.Size(147, 17);
@@ -175,15 +159,17 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel1.BackColor = System.Drawing.Color.SlateGray;
             this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.panel1.Controls.Add(this.label2);
+            this.panel1.Controls.Add(this.tbClassName);
             this.panel1.Controls.Add(this.labelClassName);
             this.panel1.Controls.Add(this.btnRun);
             this.panel1.Controls.Add(this.tbOutputName);
             this.panel1.Controls.Add(this.btnGenerate);
-            this.panel1.Location = new System.Drawing.Point(5, 6);
-            this.panel1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel1.Location = new System.Drawing.Point(4, 5);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel1.Name = "panel1";
-            this.panel1.Padding = new System.Windows.Forms.Padding(11, 10, 11, 10);
-            this.panel1.Size = new System.Drawing.Size(397, 141);
+            this.panel1.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.panel1.Size = new System.Drawing.Size(298, 115);
             this.panel1.TabIndex = 8;
             // 
             // menuStrip1
@@ -206,7 +192,6 @@ namespace WindowsFormsApp1
             this.newToolStripMenuItem,
             this.openToolStripMenuItem,
             this.saveToolStripMenuItem,
-            this.saveAsToolStripMenuItem,
             this.toolStripSeparator5,
             this.exiteToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
@@ -216,10 +201,9 @@ namespace WindowsFormsApp1
             // 
             // newToolStripMenuItem
             // 
-            this.newToolStripMenuItem.Image = global::WindowsFormsApp1.Properties.Resources.new_file;
             this.newToolStripMenuItem.Name = "newToolStripMenuItem";
             this.newToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.newToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.newToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.newToolStripMenuItem.Text = "New";
             this.newToolStripMenuItem.Click += new System.EventHandler(this.newToolStripMenuItem_Click);
             // 
@@ -227,7 +211,7 @@ namespace WindowsFormsApp1
             // 
             this.openToolStripMenuItem.Name = "openToolStripMenuItem";
             this.openToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.openToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.openToolStripMenuItem.Text = "Open";
             this.openToolStripMenuItem.Click += new System.EventHandler(this.openToolStripMenuItem_Click);
             // 
@@ -235,27 +219,20 @@ namespace WindowsFormsApp1
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
             this.saveToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
-            // 
-            // saveAsToolStripMenuItem
-            // 
-            this.saveAsToolStripMenuItem.Name = "saveAsToolStripMenuItem";
-            this.saveAsToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
-            this.saveAsToolStripMenuItem.Text = "Save as";
-            this.saveAsToolStripMenuItem.Click += new System.EventHandler(this.saveAsToolStripMenuItem_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(143, 6);
             // 
             // exiteToolStripMenuItem
             // 
             this.exiteToolStripMenuItem.Name = "exiteToolStripMenuItem";
             this.exiteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Alt | System.Windows.Forms.Keys.F4)));
-            this.exiteToolStripMenuItem.Size = new System.Drawing.Size(184, 26);
+            this.exiteToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.exiteToolStripMenuItem.Text = "Exit";
             this.exiteToolStripMenuItem.Click += new System.EventHandler(this.exiteToolStripMenuItem_Click);
             // 
@@ -437,8 +414,8 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.BackColor = System.Drawing.Color.Gold;
             this.panel2.Controls.Add(this.panel1);
-            this.panel2.Location = new System.Drawing.Point(17, 103);
-            this.panel2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel2.Location = new System.Drawing.Point(13, 84);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel2.Name = "panel2";
             this.panel2.Padding = new System.Windows.Forms.Padding(3, 2, 11, 2);
             this.panel2.Size = new System.Drawing.Size(409, 153);
@@ -480,9 +457,19 @@ namespace WindowsFormsApp1
             this.panel3.Location = new System.Drawing.Point(432, 103);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 10, 11, 2);
             this.panel3.Name = "panel3";
-            this.panel3.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel3.Size = new System.Drawing.Size(611, 404);
+            this.panel3.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Size = new System.Drawing.Size(458, 328);
             this.panel3.TabIndex = 12;
+            // 
+            // tbGeneratedCode
+            // 
+            this.tbGeneratedCode.BackColor = System.Drawing.SystemColors.InactiveCaptionText;
+            this.tbGeneratedCode.Location = new System.Drawing.Point(5, 5);
+            this.tbGeneratedCode.Name = "tbGeneratedCode";
+            this.tbGeneratedCode.ReadOnly = true;
+            this.tbGeneratedCode.Size = new System.Drawing.Size(448, 318);
+            this.tbGeneratedCode.TabIndex = 0;
+            this.tbGeneratedCode.Text = "";
             // 
             // panel4
             // 
@@ -491,11 +478,11 @@ namespace WindowsFormsApp1
             | System.Windows.Forms.AnchorStyles.Right)));
             this.panel4.BackColor = System.Drawing.Color.Gold;
             this.panel4.Controls.Add(this.tbStatus);
-            this.panel4.Location = new System.Drawing.Point(432, 539);
-            this.panel4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.panel4.Location = new System.Drawing.Point(324, 438);
+            this.panel4.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.panel4.Name = "panel4";
-            this.panel4.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel4.Size = new System.Drawing.Size(611, 79);
+            this.panel4.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel4.Size = new System.Drawing.Size(458, 64);
             this.panel4.TabIndex = 13;
             // 
             // panel5
@@ -508,23 +495,17 @@ namespace WindowsFormsApp1
             this.panel5.Location = new System.Drawing.Point(17, 263);
             this.panel5.Margin = new System.Windows.Forms.Padding(3, 10, 11, 2);
             this.panel5.Name = "panel5";
-            this.panel5.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.panel5.Size = new System.Drawing.Size(409, 354);
+            this.panel5.Padding = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel5.Size = new System.Drawing.Size(307, 288);
             this.panel5.TabIndex = 13;
             // 
             // tbSource
             // 
-            this.tbSource.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.tbSource.Location = new System.Drawing.Point(5, 6);
-            this.tbSource.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tbSource.Multiline = true;
+            this.tbSource.Location = new System.Drawing.Point(4, 5);
             this.tbSource.Name = "tbSource";
-            this.tbSource.ScrollBars = System.Windows.Forms.ScrollBars.Both;
-            this.tbSource.Size = new System.Drawing.Size(397, 342);
-            this.tbSource.TabIndex = 1;
-            this.tbSource.TextChanged += new System.EventHandler(this.tbSource_TextChanged);
+            this.tbSource.Size = new System.Drawing.Size(298, 278);
+            this.tbSource.TabIndex = 0;
+            this.tbSource.Text = "";
             // 
             // label1
             // 
@@ -561,6 +542,30 @@ namespace WindowsFormsApp1
             this.radioVB.Text = "VB";
             this.radioVB.UseVisualStyleBackColor = true;
             // 
+            // tbClassName
+            // 
+            this.tbClassName.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbClassName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbClassName.Location = new System.Drawing.Point(161, 8);
+            this.tbClassName.Margin = new System.Windows.Forms.Padding(2);
+            this.tbClassName.Name = "tbClassName";
+            this.tbClassName.Size = new System.Drawing.Size(136, 23);
+            this.tbClassName.TabIndex = 7;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label2.Location = new System.Drawing.Point(-1, 8);
+            this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(91, 17);
+            this.label2.TabIndex = 8;
+            this.label2.Text = "Class name";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -579,7 +584,7 @@ namespace WindowsFormsApp1
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.menuStrip1);
             this.MainMenuStrip = this.menuStrip1;
-            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.Name = "Form1";
             this.Text = "Formular Specification";
             this.panel1.ResumeLayout(false);
@@ -590,11 +595,9 @@ namespace WindowsFormsApp1
             this.toolStrip1.PerformLayout();
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.panel3.PerformLayout();
             this.panel4.ResumeLayout(false);
             this.panel4.PerformLayout();
             this.panel5.ResumeLayout(false);
-            this.panel5.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -603,7 +606,6 @@ namespace WindowsFormsApp1
         #endregion
 
         private System.Windows.Forms.Button btnGenerate;
-        private System.Windows.Forms.TextBox tbGeneratedCode;
         private System.Windows.Forms.TextBox tbStatus;
         private System.Windows.Forms.TextBox tbOutputName;
         private System.Windows.Forms.Button btnRun;
@@ -639,13 +641,15 @@ namespace WindowsFormsApp1
         private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem parseToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.Panel panel5;
-        private System.Windows.Forms.TextBox tbSource;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.RadioButton radioCS;
         private System.Windows.Forms.RadioButton radioVB;
+        private System.Windows.Forms.RichTextBox tbGeneratedCode;
+        private System.Windows.Forms.RichTextBox tbSource;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox tbClassName;
     }
 }
 
