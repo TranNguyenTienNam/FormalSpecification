@@ -45,6 +45,8 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+
+            _editingHistory.Push(tbSource.Text);
         }
 
         private void btnRun_Click(object sender, EventArgs e)
@@ -289,6 +291,14 @@ namespace WindowsFormsApp1
             toolStripBtnUndo.Enabled = _editingHistory.Count > 1;
         }
 
+        private void toolStripBtnRedo_Click(object sender, EventArgs e)
+        {
+            _editingHistory.Push(_undoHistory.Pop());
+            toolStripBtnRedo.Enabled = _undoHistory.Count > 0;
+            tbSource.Text = _editingHistory.Peek();
+            toolStripBtnUndo.Enabled = true;
+        }
+
         private void copyToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (tbSource.SelectionLength > 0) tbSource.Copy();
@@ -319,35 +329,28 @@ namespace WindowsFormsApp1
             toolStripBtnUndo.Enabled = _editingHistory.Count > 1;
         }
 
-        private void tbSource_TextChanged(object sender, EventArgs e)
-        {
-            if (tbSource.Modified)
-            {
-                RecordEdit();
-            }
-        }
-        private void RecordEdit()
-        {
-            _editingHistory.Push(tbSource.Text);
-            toolStripBtnUndo.Enabled = true;
-            _undoHistory.Clear();
-            toolStripBtnRedo.Enabled = false;
-        }
-
-        private void toolStripBtnRedo_Click(object sender, EventArgs e)
-        {
-            _editingHistory.Push(_undoHistory.Pop());
-            toolStripBtnRedo.Enabled = _undoHistory.Count > 0;
-            tbSource.Text = _editingHistory.Peek();
-            toolStripBtnUndo.Enabled = true;
-        }
-
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             _editingHistory.Push(_undoHistory.Pop());
             toolStripBtnRedo.Enabled = _undoHistory.Count > 0;
             tbSource.Text = _editingHistory.Peek();
             toolStripBtnUndo.Enabled = true;
+        }
+
+        private void tbSource_TextChanged(object sender, EventArgs e)
+        {
+            if (tbSource.Text != _editingHistory.Peek())
+            {
+                RecordEdit();
+            }
+        }
+
+        private void RecordEdit()
+        {
+            _editingHistory.Push(tbSource.Text);
+            toolStripBtnUndo.Enabled = true;
+            _undoHistory.Clear();
+            toolStripBtnRedo.Enabled = false;
         }
 
         #region Change text color
