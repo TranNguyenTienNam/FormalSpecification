@@ -9,3 +9,14 @@ D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj
 D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.pdb
 D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.FormTest.resources
 D:\DacTa\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\Formular Specification.csproj.AssemblyReference.cache
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\bin\Debug\WindowsFormsApp1.exe.config
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\bin\Debug\WindowsFormsApp1.exe
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\bin\Debug\WindowsFormsApp1.pdb
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\Formular Specification.csproj.AssemblyReference.cache
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.Form1.resources
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.FormTest.resources
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.Properties.Resources.resources
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\Formular Specification.csproj.GenerateResource.cache
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\Formular Specification.csproj.CoreCompileInputs.cache
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.exe
+E:\Projects\VisualStudioProjects\FormularSpecification\Formular_Specification\Formular Specification\obj\Debug\WindowsFormsApp1.pdb

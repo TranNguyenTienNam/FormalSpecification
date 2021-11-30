@@ -262,6 +262,22 @@ namespace WindowsFormsApp1
             }
         }
 
+
+        private void toolStripBtnNew_Click(object sender, EventArgs e)
+        {
+            newToolStripMenuItem_Click(sender, e);
+        }
+
+        private void toolStripBtnOpen_Click(object sender, EventArgs e)
+        {
+            openToolStripMenuItem_Click(sender, e);
+        }
+
+        private void toolStripBtnSave_Click(object sender, EventArgs e)
+        {
+            saveToolStripMenuItem_Click(sender, e);
+        }
+
         private void toolStripBtnCopy_Click(object sender, EventArgs e)
         {
             if (tbSource.SelectionLength > 0) tbSource.Copy();
