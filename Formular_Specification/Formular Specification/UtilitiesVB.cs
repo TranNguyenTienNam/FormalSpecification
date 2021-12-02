@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 namespace WindowsFormsApp1
 {
-    static class Utilities
+    static class UtilitiesVB
     {
         static string DIFFERENCE_OF_ARRAY_INDEX = "-1";
         static string VM_SYNTAX = "VM";
@@ -47,8 +47,9 @@ namespace WindowsFormsApp1
         public static string generateVBCode(string specificationSource)
         {
             string result = "";
+            List<string> threePartSplited = splitInputToThreePart(specificationSource);
 
-            result =  UtilitiesVB.generateCSCode(specificationSource);
+            result = handlePost(threePartSplited[2]);
 
             return result;
         }
@@ -74,15 +75,6 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Please generate code", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-        }
-        public static void copyFile(string sourcePath, string desPath)
-        {
-            File.Copy(sourcePath, desPath);
-        }
-        public static void deleteFolder(string sourcePath)
-        {
-            DirectoryInfo directory = new DirectoryInfo(sourcePath);
-            directory.Delete();
         }
         #endregion
         #region sub-handler
@@ -116,16 +108,7 @@ namespace WindowsFormsApp1
         {
             string result = "";
 
-            int lastIndexOfEqualOperator = input.LastIndexOf('=');
-
-            if(lastIndexOfEqualOperator != -1)
-            {
-                char prefixOfEqualOperator = input[lastIndexOfEqualOperator - 1];
-                if (prefixOfEqualOperator != '!' && prefixOfEqualOperator != '=' && prefixOfEqualOperator != '>' && prefixOfEqualOperator != '<')
-                {
-                    input = Regex.Replace(input, "=", "==");
-                }
-            }
+            input = Regex.Replace(input, "!=", "<>");
             result = input;
 
             return result;
@@ -155,9 +138,13 @@ namespace WindowsFormsApp1
                 }
             }
 
-            if (result.IndexOf("if") != -1)
-                result += " ~else~ ~throw~ ~new~ ~Exception~();~";
-            
+            if (result.IndexOf("If") != -1)
+            {
+                int indexOfLastEndIf = result.LastIndexOf("End If");
+                result = result.Substring(0, indexOfLastEndIf);
+                result += "~Else~ ~Throw~ ~New~ ~Exception~()\n~End If~";
+            }
+            result = Regex.Replace(result, "%", " Mod ");
 
             return result;
         }
@@ -172,13 +159,13 @@ namespace WindowsFormsApp1
                 return handleReturnConditionLogic(splitedIfCondition[0]);
             } else
             {
-                result = "\n" + "~if~( " + handleEqualOperationInConditionStatement(splitedIfCondition[1]).Trim();
+                result = "\n" + "~If~( " + handleEqualOperationInConditionStatement(splitedIfCondition[1]).Trim();
                 for (int i = 2; i< splitedIfCondition.Length; i++)
                 {
                     splitedIfCondition[i] = handleEqualOperationInConditionStatement(splitedIfCondition[i]).Trim();
-                    result += " && " + splitedIfCondition[i];
+                    result += " ~AndAlso~ " + splitedIfCondition[i];
                 }
-                result += " )\n{\n\t" + handleReturnConditionLogic(splitedIfCondition[0]) + "\n}";
+                result += " ) ~Then~\n\t" + handleReturnConditionLogic(splitedIfCondition[0]) + "\n~End If~";
             }
 
             return result;
@@ -190,7 +177,7 @@ namespace WindowsFormsApp1
             input = removeOpenAndCloseBoundBrackets(input);
             string[] splitedReturnConditionLogic = input.Split('=');
 
-            result = "~return~ " + handleBooleanReturn(splitedReturnConditionLogic[1])+ "~;~" ;
+            result = "~Return~ " + handleBooleanReturn(splitedReturnConditionLogic[1]);
 
             return result;
         }
@@ -201,10 +188,10 @@ namespace WindowsFormsApp1
 
             if(input.ToLower() == "false")
             {
-                return "~false~";
+                return "~False~";
             } else if (input.ToLower() == "true")
             {
-                return "~true~";
+                return "~True~";
             } else
             {
                 result = input;
@@ -224,7 +211,7 @@ namespace WindowsFormsApp1
         }
         public static string exportExecuteLogicInIteration(string input)
         {
-            return input.Replace('(', '[').Replace(')', ']');
+            return input;
         }
         public static string findStringOfStartAndEndIndex(string input)
         {
@@ -291,7 +278,7 @@ namespace WindowsFormsApp1
         public static void HandlingPreLine(string line, ref string condition)
         {
             if (line.Replace("\n", "").Replace("\t", "").Trim().Remove(0, 3).Length == 0)
-                condition = "~true~";
+                condition = "~True~";
             else
             {
                 condition += line.Replace(" ", "").Remove(0, 3);
@@ -307,18 +294,18 @@ namespace WindowsFormsApp1
             bool isArray = false;
             foreach (var input in inputs)
             {
-                paras += string.Format("~ref~ ~{0}~ ~{1}~", input.Value, input.Key);
+                paras += string.Format("~ByRef~ ~{1}~ As ~{0}~", input.Value, input.Key);
                 if (input.Key != inputs.Last().Key) paras += "~,~ ";
 
-                if (input.Value == "~int~~[]~" || input.Value == "~float~~[]~") isArray = true;
+                if (input.Value == "~Integer~~()~" || input.Value == "~Single~~()~") isArray = true;
             }
 
             if (isArray == false)
             {
                 foreach (var input in inputs)
                 {
-                    code += string.Format("\t~Console~.~WriteLine~(~\"Nhap {0}:\"~);\n", input.Key);
-                    code += string.Format("\t{0} = ~{1}~.~Parse~(~Console~.~ReadLine~());\n", input.Key, input.Value);
+                    code += string.Format("\t~Console~.~WriteLine~(~\"Nhap {0}:\"~)\n", input.Key);
+                    code += string.Format("\t{0} = ~{1}~.~Parse~(~Console~.~ReadLine~())\n", input.Key, input.Value);
                 }
             }
             else
@@ -328,11 +315,11 @@ namespace WindowsFormsApp1
                 string arrType = null;
                 foreach (var input in inputs)
                 {
-                    if (input.Value == "int")
+                    if (input.Value == "Integer")
                     {
                         string pre = null;
-                        pre += string.Format("\t~Console~.~WriteLine~(~\"Nhap so phan tu {0} cua day:\"~);\n", input.Key);
-                        pre += string.Format("\t{0} = ~int~.~Parse~(~Console~.~ReadLine~());\n", input.Key);
+                        pre += string.Format("\t~Console~.~WriteLine~(~\"Nhap so phan tu {0} cua day:\"~)\n", input.Key);
+                        pre += string.Format("\t{0} = ~Integer~.~Parse~(~Console~.~ReadLine~())\n", input.Key);
                         code = pre + code;
 
                         loopsVar = input.Key;
@@ -340,17 +327,17 @@ namespace WindowsFormsApp1
                     else
                     {
                         arrVar = input.Key;
-                        arrType = input.Value.Split('[', ']')[0];
+                        arrType = input.Value.Split('(', ')')[0];
                     }
                 }
 
-                code += string.Format("\t{0} = ~new~ {1}[{2}];\n", arrVar, arrType, loopsVar);
-                code += string.Format("\tfor (~int~ i = 0; i < {0}; i++)\n\t{{\n", loopsVar);
-                code += string.Format("\t\t~Console~.~WriteLine~(~\"Nhap phan tu {1}[{{0}}]:\"~, i);\n", loopsVar, arrVar);
-                code += string.Format("\t\t{0}[i] = {1}.~Parse~(~Console~.~ReadLine~());\n\t}}\n", arrVar, arrType);
+                code += string.Format("\t~{0}~ = ~New~ ~{1}~(~{2}~ - 1) {{}}\n", arrVar, arrType, loopsVar);
+                code += string.Format("\t~For~ i ~As~ ~Integer~ ~= 0~ ~To~ ~{0}~ - 1\n", loopsVar);
+                code += string.Format("\t\t~Console~.~WriteLine~(~\"Nhap phan tu {1}[{{0}}]:\"~, i)\n", loopsVar, arrVar);
+                code += string.Format("\t\t{0}(i) = {1}.~Parse~(~Console~.~ReadLine~())\n\t~Next~\n", arrVar, arrType);
             }
 
-            generateCode += string.Format("~public~ ~void~ ~Nhap_{0}~(~{1}~)~\n{{\n{2}}}\n\n", title, paras, code);
+            generateCode += string.Format("~\tPublic~ ~Sub~ ~Nhap_{0}~(~{1}~)~\n{2}~End Sub~\n\n", title, paras, code);
         }
 
         public static void GeneratingCheckFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, string condition)
@@ -358,10 +345,13 @@ namespace WindowsFormsApp1
             string paras = null;
             foreach (var input in inputs)
             {
-                paras += string.Format("~{0}~ ~{1}~", input.Value, input.Key);
+                paras += string.Format("~ByVal~ ~{1}~ As ~{0}~", input.Value, input.Key);
                 if (input.Key != inputs.Last().Key) paras += ", ";
             }
-            generateCode += string.Format("~public~ ~bool~ ~KiemTra_{0}~({1})\n{{\n\t~return~ {2};\n}}\n\n", title, paras, condition);
+
+            condition = condition.Replace("&&", " ~AndAlso~ ");
+
+            generateCode += string.Format("~Public~ ~Function~ ~KiemTra_{0}~(~{1}~)~ As~ ~Boolean~\n\t~Return~ {2}\n~End Function~\n\n", title, paras, condition);
         }
 
         public static void GeneratingMainFunction(ref string generateCode, string title, List<KeyValuePair<string, string>> inputs, KeyValuePair<string, string> output)
@@ -371,10 +361,10 @@ namespace WindowsFormsApp1
             string ref_paras = null;
             foreach (var input in inputs)
             {
-                code += string.Format("\t~{0}~ ~{1} =~ ~{2}~;\n", input.Value, input.Key, GetInitializeValue(input.Value));
+                code += string.Format("\t~Dim~ ~{1}~ As ~{0}~ = ~{2}~\n", input.Value, input.Key, GetInitializeValue(input.Value));
 
                 paras += string.Format("{0}", input.Key);
-                ref_paras += string.Format("~ref~ ~{0}~", input.Key);
+                ref_paras += string.Format("~{0}~", input.Key);
 
                 if (input.Key != inputs.Last().Key)
                 {
@@ -382,14 +372,14 @@ namespace WindowsFormsApp1
                     ref_paras += ", ";
                 }
             }
-            code += string.Format("\t~{0}~ ~{1} = {2};~\n", output.Value, output.Key, GetInitializeValue(output.Value));
-            code += string.Format("\t~Program~ p = ~new~ ~Program~();\n");
-            code += string.Format("\tp.~Nhap_{0}~({1});\n", title, ref_paras);
-            code += string.Format("\t~if~ (p.~KiemTra_{0}~({1}))\n\t{{\n\t\t{2} = p.~XuLy_{0}~({1});\n\t\tp.~Xuat_{0}~({2});\n\t}}\n", title, paras, output.Key);
-            code += string.Format("\t~else~\n\t\t~Console~.~WriteLine~(~\"Thong tin nhap khong hop le!\"~);\n");
-            code += string.Format("\t~Console~.~ReadLine~();\n");
+            code += string.Format("\t~Dim~ ~{1}~ As ~{0}~ = {2}~\n", output.Value, output.Key, GetInitializeValue(output.Value));
+            code += string.Format("\t~Dim~ ~p~ As ~Program~ = ~New~ ~Program~()\n");
+            code += string.Format("\tp.~Nhap_{0}~({1})\n", title, ref_paras);
+            code += string.Format("\t~If~ p.~KiemTra_{0}~(~{1}~) ~Then~\n\t\t~{2}~ = p.~XuLy_{0}~({1})\n\t\tp.~Xuat_{0}~({2})\n", title, paras, output.Key);
+            code += string.Format("\t~Else~\n\t\t~Console~.~WriteLine~(~\"Thong tin nhap khong hop le!\"~)\n\tEnd If\n");
+            code += string.Format("\t\t~Console~.~ReadLine~()\n");
 
-            generateCode += string.Format("~public~ ~static~ ~void~ ~Main~(~string~[] args)\n{{~\n{0}~}}~", code);
+            generateCode += string.Format("~Public~ ~Shared~ ~Sub~ ~Main~(~ByVal~ args ~As~ ~String~())~\n{0}~End Sub~", code);
         }
 
         public static string GetTypes(string typeFL)
@@ -397,21 +387,21 @@ namespace WindowsFormsApp1
             switch (typeFL)
             {
                 case "N":
-                    return "int";
+                    return "Integer";
                 case "N*":
-                    return "~int~~[]~";
+                    return "~Integer~~()~";
                 case "Z":
-                    return "int";
+                    return "Integer";
                 case "Z*":
-                    return "~int~~[]~";
+                    return "~Integer~~()~";
                 case "R":
-                    return "float";
+                    return "Single";
                 case "R*":
-                    return "~float~~[]~";
+                    return "~Single~~()~";
                 case "B":
-                    return "bool";
+                    return "Boolean";
                 case "char*":
-                    return "string";
+                    return "String";
                 default:
                     Console.WriteLine("This type {0} is invalid!", typeFL);
                     return null;
@@ -422,23 +412,23 @@ namespace WindowsFormsApp1
         {
             switch (type)
             {
-                case "int":
+                case "Integer":
                     return "0";
-                case "float":
+                case "Single":
                     return "0";
-                case "bool":
-                    return "false";
+                case "Boolean":
+                    return "False";
                 default:
-                    return "null";
+                    return "Nothing";
             }
         }
 
         public static void GeneratingOutputFunction(ref string generateCode, string title, KeyValuePair<string, string> output)
         {
             string code = null;
-            code = string.Format("\t~Console~.~WriteLine~(~\"Ket qua la: {{0}}\"~, {0});\n", output.Key);
+            code = string.Format("\t~Console~.~WriteLine~(~\"Ket qua la: {{0}}\"~, {0})\n", output.Key);
 
-            generateCode += string.Format("~public~ ~void~ ~Xuat_{0}~(~{1}~ ~{2}~)\n{{\n{3}}}\n\n", title, output.Value, output.Key, code);
+            generateCode += string.Format("~Public~ ~Sub~ ~Xuat_{0}~(~ByVal~ ~{2}~ ~As~ ~{1}~)~\n~{3}~End Sub~\n\n", title, output.Value, output.Key, code);
         }
 
         public static void GeneratingHandlingFunction(ref string result, string title, List<KeyValuePair<string, string>> inputs, string postPart, KeyValuePair<string, string> output)
@@ -446,13 +436,13 @@ namespace WindowsFormsApp1
             string paras = null;
             foreach (var input in inputs)
             {
-                paras += string.Format("~{0}~ ~{1}~", input.Value, input.Key);
+                paras += string.Format("~ByVal~ ~{1}~ ~As~ ~{0}~", input.Value, input.Key);
                 if (input.Key != inputs.Last().Key) paras += "~,~ ";
             }
 
             postPart = Regex.Replace(postPart, @"\r\n?|\n", "\n\t"); // TODO: Tab
 
-            result += string.Format("~public~ {0} ~XuLy_{1}~~(~{2}~)~\n~{{~\n{3}\n~}}~\n", output.Value, title, paras, postPart);
+            result += string.Format("~Public~ ~Function~ ~XuLy_{1}~~(~{2}~)~ ~As~ ~{0}~\n\t~{3}~\n~End Function~\n", output.Value, title, paras, postPart);
         }
         #endregion
         #region router 
@@ -497,7 +487,7 @@ namespace WindowsFormsApp1
                     }
                     else // only one VM
                     {
-                        List<string> handled = handleVMIteration(post, "~return~ ~false~;~", DIFFERENCE_OF_ARRAY_INDEX);
+                        List<string> handled = handleVMIteration(post, "~Return~ ~False~", DIFFERENCE_OF_ARRAY_INDEX);
                         result = handled[0] + handled[1] + handled[2];
                     }
                 }
@@ -518,7 +508,7 @@ namespace WindowsFormsApp1
                     }
                     else // only one TT
                     {
-                        List<string> handled = handleTTIteration(post, "~return~ ~true~;~", DIFFERENCE_OF_ARRAY_INDEX);
+                        List<string> handled = handleTTIteration(post, "~Return~ ~True~", DIFFERENCE_OF_ARRAY_INDEX);
                         result = handled[0] + handled[1] + handled[2];
                     }
                 }
@@ -540,9 +530,9 @@ namespace WindowsFormsApp1
         {
             input = Regex.Replace(input, @"\r\n?|\n", "\n\t");
             string generateCode = null;
-            generateCode += "~using~ System;\n";
+            generateCode += "~Imports~ System\n";
             string _namespace = "FormalSpecification";
-            generateCode += string.Format("~namespace~ ~{0}~\n~{{~\n~public~ ~class~ ~{2}~\n{{\n{1}\n}}\n}}", _namespace, input,className);
+            generateCode += string.Format("~Namespace~ ~{0}~\n~Public~ ~Class~ ~{2}~\n{1}\nEnd Class\nEnd Namespace", _namespace, input,className);
             return generateCode;
         }
         #endregion
@@ -561,16 +551,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"~int~ {indexRepresent}~;~";
+            string declarePart = $"~Dim~ ~{indexRepresent}~ ~As~ ~Integer~";
             string bodyPart = "";
-            string returnPart = $"\n~return~ ~true~;~";
-            string executeCodeString = "\n~if~(!(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~))~"
-                + "\n~{~" + $"\n\t{breakPointString}" + "\n~}~";
+            string returnPart = $"\n~Return~ ~True";
+            string executeCodeString = "\n~If~(~Not~(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~))~ ~Then~"
+                + "\n" + $"\n\t{breakPointString}" + "\n~End If~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
             executeCodeString = handleEqualOperationInConditionStatement(executeCodeString);
 
-            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
-                + "\n~{~" + executeCodeString + "\n~}~";
+            bodyPart = $"\n~For~ ~{indexRepresent}~ = ~{startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}~"
+                + "\n" + executeCodeString + "\n~Next~";
 
             result.Add(declarePart);
             result.Add(bodyPart);
@@ -592,16 +582,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + differenceArrayIndex;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"~int~ {indexRepresent}~;~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
-            string returnPart = $"\n~return~ ~false~;~";
-            string executeCodeString = "\n~if~(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~)~"
-                + "\n~{~" + $"\n\t{breakPointString}" + "\n~}~";
+            string returnPart = $"\n~Return~ ~False~";
+            string executeCodeString = "\n~If~(~" + exportExecuteLogicInIteration(excuteOfIteration) + "~)~ Then"
+                + "\n" + $"\n\t{breakPointString}" + "\n~End If~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
             executeCodeString = handleEqualOperationInConditionStatement(executeCodeString);
 
-            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
-                + "\n~{~" + executeCodeString + "\n~}~";
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+                + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
             result.Add(bodyPart);
@@ -624,16 +614,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"~int~ {indexRepresent};";
+            string declarePart = $"Dim {indexRepresent} As ~Integer~";
             string bodyPart = "";
-            string returnPart = $"\n~return~ ~true~;~";
+            string returnPart = $"\n~Return~ ~True";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~return~ ~false~;~", "");
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~Return~ ~False~;~", "");
             string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
-                + "\n{" + executeCodeString + "\n}";
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+                + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
             result.Add(bodyPart);
@@ -655,16 +645,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"~int~ {indexRepresent}~;~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
-            string returnPart = $"\n~return~ ~true~;~";
+            string returnPart = $"\n~Return~ ~True~";
 
-            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~goto~ ~breakPoint~;~", "");
-            string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\n~breakPoint~:~ ~continue~;";
+            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~GoTo~ ~breakPoint~", "");
+            string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1] + handledTTIteration[2] + "\n~breakPoint~:~ ~Continue~ ~For~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
-                + "\n{" + executeCodeString + "\n}";
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+                + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
             result.Add(bodyPart);
@@ -686,16 +676,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"~int~ {indexRepresent}~;~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
-            string returnPart = $"\n~return~ ~true~;";
+            string returnPart = $"\n~Return~ ~True~";
 
-            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~goto~ ~breakPoint~;~", "");
-            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\n~breakPoint~:~ ~continue~;";
+            List<string> handledVMIteration = handleVMIteration(excuteOfIteration, "~GoTo~ ~breakPoint~", "");
+            string executeCodeString = "\n" + handledVMIteration[0] + handledVMIteration[1] + handledVMIteration[2] + "\n~breakPoint~:~ ~Continue~ ~For~";
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
-                + "\n{" + executeCodeString + "\n}";
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+                + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
             result.Add(bodyPart);
@@ -717,16 +707,16 @@ namespace WindowsFormsApp1
             string startIndexofIteration = splitedArray[0] + DIFFERENCE_OF_ARRAY_INDEX;
             string endIndexOfIteration = splitedArray[splitedArray.Length - 1];
 
-            string declarePart = $"~int~ {indexRepresent}~;~";
+            string declarePart = $"~Dim~ {indexRepresent} ~As~ ~Integer~";
             string bodyPart = "";
-            string returnPart = $"\n~return~ ~false~;";
+            string returnPart = $"\n~Return~ ~False~;";
 
-            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~return~ ~true~;", "");
+            List<string> handledTTIteration = handleTTIteration(excuteOfIteration, "~Return~ ~True~", "");
             string executeCodeString = "\n" + handledTTIteration[0] + handledTTIteration[1];
             executeCodeString = Regex.Replace(executeCodeString, @"\r\n?|\n", "\n\t");
 
-            bodyPart = $"\n~for~ ({indexRepresent} = {startIndexofIteration}; {indexRepresent} <= {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}; {indexRepresent}++)"
-                + "\n{" + executeCodeString + "\n}";
+            bodyPart = $"\n~For~ {indexRepresent} = {startIndexofIteration} ~To~ {endIndexOfIteration + DIFFERENCE_OF_ARRAY_INDEX}"
+                + "\n" + executeCodeString + "\nNext";
 
             result.Add(declarePart);
             result.Add(bodyPart);

@@ -386,3 +386,11 @@ FodyWeavers.xsd
 # JetBrains Rider
 .idea/
 *.sln.iml
+*.pdb
+*.exe
+*.cache
+*.txt
+*.cache
+*.exe
+*.pdb
+*.resources
