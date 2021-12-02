@@ -332,7 +332,7 @@ namespace WindowsFormsApp1
                 }
 
                 code += string.Format("\t~{0}~ = ~New~ ~{1}~(~{2}~ - 1) {{}}\n", arrVar, arrType, loopsVar);
-                code += string.Format("\t~For~ ~Dim~ i ~As~ ~Integer~ ~= 0~ ~To~ ~{0}~ - 1\n", loopsVar);
+                code += string.Format("\t~For~ i ~As~ ~Integer~ ~= 0~ ~To~ ~{0}~ - 1\n", loopsVar);
                 code += string.Format("\t\t~Console~.~WriteLine~(~\"Nhap phan tu {1}[{{0}}]:\"~, i)\n", loopsVar, arrVar);
                 code += string.Format("\t\t{0}(i) = {1}.~Parse~(~Console~.~ReadLine~())\n\t~Next~\n", arrVar, arrType);
             }
